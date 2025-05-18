@@ -6,11 +6,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
 
 class Product extends Model
 {
-    // TO DO ...
+    // imagem dos produtos
+    public function getImageUrlAttribute(): string
+    {
+        if ($this->photo && Storage::disk('public')->exists('products/' . $this->photo)) {
+            return asset('storage/products/' . $this->photo);
+        }
+
+        return asset('images/placeholder.jpg');
+    }
+
+    // Accessor: verifica se tem desconto
+    public function getHasDiscountAttribute(): bool
+    {
+        return $this->discount !== null && $this->discount_min_qty !== null;
+    }
+
+    // Accessor: devolve o preço com desconto (ou preço normal)
+    public function getDiscountedPriceAttribute(): float
+    {
+        return $this->has_discount ? ($this->price - $this->discount) : $this->price;
+    }
+
 
 
     // ------------------- CODIGO RELACOES ----------------------
