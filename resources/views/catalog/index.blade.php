@@ -8,7 +8,7 @@
 <meta http-equiv="refresh" content="3">
 @endif
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-    <h1 class="text-4xl font-bold text-center text-yellow-700 mb-10">Catálogo de Produtos</h1>
+    <h1 class="text-4xl font-bold text-center text-yellow-700 mb-10">Product Catalog</h1>
 
     <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         @foreach($products as $product)
@@ -50,12 +50,15 @@
                     <button
                         type="submit"
                         class="h-10 bg-lime-600 text-white px-4 rounded-r-md hover:bg-lime-700 transition flex items-center justify-center">
-                        Adicionar
+                        Add
                     </button>
                 </form>
             </div>
         </div>
         @endforeach
+    </div>
+    <div class="mt-8 flex justify-center">
+        {{ $products->links() }}
     </div>
 </div>
 @endsection

@@ -9,7 +9,7 @@ class CatalogController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get(); 
+        $products = Product::with('category')->paginate(20); 
         return view('catalog.index', compact('products'));
     }
 }

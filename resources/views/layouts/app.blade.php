@@ -24,7 +24,7 @@
     </main>
 
     <footer class="bg-white text-center py-4 text-sm text-gray-500 mt-8">
-        &copy; {{ date('Y') }} Grocery Club. Todos os direitos reservados.
+        &copy; {{ date('Y') }} Grocery Club. All rights reserved.
     </footer>
 </body>
 </html>
