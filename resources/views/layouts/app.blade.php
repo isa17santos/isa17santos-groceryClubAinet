@@ -11,9 +11,12 @@
 
     <nav class="fixed top-0 w-full z-50 bg-white dark:bg-gray-800 shadow-md h-[64px] overflow-hidden px-6 flex items-center justify-between">
         <div class="flex items-center space-x-3">
-            <img src="{{ asset('storage/images/logo.png') }}" alt="Grocery Club" class="h-24">
+            <a href="{{ route('catalog') }}" class="hover:opacity-80 transition">
+                <img src="{{ asset('storage/images/logo.png') }}" alt="Grocery Club" class="h-24">
+            </a>
             <span class="text-3xl font-bold text-yellow-700 dark:text-yellow-700">Grocery Club</span>
         </div>
+
         <div class="flex items-center gap-6">
             <!-- Dark Mode Toggle -->
             <form action="{{ route('toggle.theme') }}" method="POST">
