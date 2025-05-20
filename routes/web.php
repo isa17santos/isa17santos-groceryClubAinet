@@ -20,3 +20,10 @@ Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
 Route::get('/login', function () {
     return 'Login page coming soon!';
 })->name('login');
+
+//dark e light mode
+Route::post('/toggle-theme', function () {
+    $theme = session('theme', 'light') === 'dark' ? 'light' : 'dark';
+    session(['theme' => $theme]);
+    return back();
+})->name('toggle.theme');

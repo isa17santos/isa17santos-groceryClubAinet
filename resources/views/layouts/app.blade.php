@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en" class="{{ session('theme', 'light') === 'dark' ? 'dark' : '' }}">
 
 <head>
     <meta charset="UTF-8">
@@ -7,24 +7,24 @@
     @vite('resources/css/app.css') <!-- tailwind -->
 </head>
 
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
 
-    <nav class="fixed top-0 w-full z-50 bg-white shadow-md h-[64px] overflow-hidden px-6 flex items-center justify-between">
+    <nav class="fixed top-0 w-full z-50 bg-white dark:bg-gray-800 shadow-md h-[64px] overflow-hidden px-6 flex items-center justify-between">
         <div class="flex items-center space-x-3">
             <img src="{{ asset('storage/images/logo.png') }}" alt="Grocery Club" class="h-24">
-            <span class="text-xl font-bold text-yellow-700">Grocery Club</span>
+            <span class="text-3xl font-bold text-yellow-700 dark:text-yellow-700">Grocery Club</span>
         </div>
         <div class="flex items-center gap-6">
-            <!-- Dark Mode Toggle Placeholder -->
-            <button id="toggle-theme"
-                class="text-gray-600 hover:text-black transition"
-                title="Toggle dark mode"
-                style="font-size: 1.8rem;">
-                🌙
-            </button>
+            <!-- Dark Mode Toggle -->
+            <form action="{{ route('toggle.theme') }}" method="POST">
+                @csrf
+                <button type="submit" class="text-xl hover:text-yellow-500 transition" title="Toggle dark mode">
+                    {{ session('theme', 'light') === 'dark' ? '☀️' : '🌙' }}
+                </button>
+            </form>
 
             <!-- Cart Link -->
-            <a href="{{ route('cart.view') }}" class="relative text-green-700 hover:text-green-900 transition" style="font-size: 1.8rem;">
+            <a href="{{ route('cart.view') }}" class="relative text-green-700 dark:text-green-300 hover:text-green-900 transition" style="font-size: 1.8rem;">
                 🛒
                 @php
                 $cart = session('cart', []);
@@ -38,7 +38,7 @@
             </a>
 
             <!-- Login Link (simple) -->
-            <a href="{{ route('login') }}" class="text-green-700 hover:underline text-2xl">Login</a>
+            <a href="{{ route('login') }}" class="text-green-700 dark:text-green-300 hover:underline text-2xl">Login</a>
         </div>
     </nav>
 
@@ -46,7 +46,7 @@
         @yield('content')
     </main>
 
-    <footer class="bg-white text-center py-4 text-sm text-gray-500 mt-8">
+    <footer class="bg-white dark:bg-gray-800 text-center py-4 text-sm text-gray-500 dark:text-gray-400 mt-8">
         &copy; {{ date('Y') }} Grocery Club. All rights reserved.
     </footer>
 </body>
