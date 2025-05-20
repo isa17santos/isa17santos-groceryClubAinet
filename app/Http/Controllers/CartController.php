@@ -29,4 +29,11 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Produto adicionado ao carrinho!');
     }
+
+    public function view()
+    {
+        $cart = session('cart', []);
+        return view('cart.index', compact('cart'));
+    }
+
 }
