@@ -100,7 +100,10 @@
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden hover:shadow-2xl transition
                     @if($product->has_discount) border-2 border-yellow-500 @endif">
 
-            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-48 object-cover">
+            <img src="{{ $product->image_url }}"
+                alt="{{ $product->name }}"
+                onerror="this.onerror=null;this.src='{{ asset('images/placeholder.jpg') }}';"
+                class="w-full h-48 object-cover">
 
             <div class="p-4">
                 <h2 class="text-xl font-bold text-lime-600 dark:text-lime-400 mt-2">{{ $product->name }}</h2>
@@ -118,26 +121,24 @@
                 <p class="mt-2 text-lg font-bold text-sky-600 dark:text-sky-300">{{ number_format($product->price, 2) }}€</p>
                 @endif
 
-                <form method="POST" action="{{ route('cart.add') }}" class="mt-4 flex items-center gap-2">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <div class="mt-4 flex items-center gap-6">
+                    <form method="POST" action="{{ route('cart.add') }}" class="flex items-center gap-2">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="number" name="quantity" id="quantity-{{ $product->id }}" value="1" min="1" step="1" onkeydown="return false" class="w-20 rounded-l-md border border-gray-300 dark:border-gray-600 shadow-sm focus:ring-lime-600 focus:border-lime-600 text-center h-10 dark:bg-gray-700 dark:text-white">
+                        <button type="submit" class="h-10 bg-lime-600 text-white px-4 rounded-r-md hover:bg-lime-700 transition flex items-center justify-center">
+                            Add
+                        </button>
+                    </form>
 
-                    <input
-                        type="number"
-                        name="quantity"
-                        id="quantity-{{ $product->id }}"
-                        value="1"
-                        min="1"
-                        step="1"
-                        onkeydown="return false"
-                        class="w-20 rounded-l-md border border-gray-300 dark:border-gray-600 shadow-sm focus:ring-lime-600 focus:border-lime-600 text-center h-10 dark:bg-gray-700 dark:text-white">
-
-                    <button
-                        type="submit"
-                        class="h-10 bg-lime-600 text-white px-4 rounded-r-md hover:bg-lime-700 transition flex items-center justify-center">
-                        Add
-                    </button>
-                </form>
+                    <form method="POST" action="{{ in_array($product->id, session('wishlist', [])) ? route('wishlist.remove') : route('wishlist.add') }}">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="text-4xl hover:text-pink-600 transition h-10 flex items-center">
+                            {{ in_array($product->id, session('wishlist', [])) ? '🧡' : '🤍' }}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
         @empty

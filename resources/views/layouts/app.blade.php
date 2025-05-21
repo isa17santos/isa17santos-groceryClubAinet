@@ -19,7 +19,7 @@
     <nav class="fixed top-0 w-full z-50 bg-white dark:bg-gray-800 shadow-md h-[64px] px-6 flex items-center justify-between">
         <div class="flex items-center space-x-3">
             <a href="{{ route('catalog') }}" class="hover:opacity-80 transition">
-                <img src="{{ asset('storage/images/logo.png') }}" alt="Grocery Club" class="h-24">
+                <img src="{{ asset('/images/logo.png') }}" alt="Grocery Club" class="h-24">
             </a>
             <span class="text-3xl font-bold text-yellow-700 dark:text-yellow-700">Grocery Club</span>
         </div>
@@ -32,6 +32,20 @@
                     {{ session('theme', 'light') === 'dark' ? '☀️' : '🌙' }}
                 </button>
             </form>
+
+            <!-- Wishlist Link -->
+            <a href="{{ route('wishlist') }}" class="relative text-pink-600 hover:text-pink-800 transition" title="Wishlist" style="font-size: 1.8rem;">
+                🧡
+                @php
+                    $wishlist = session('wishlist', []);
+                    $wishlistCount = count($wishlist);
+                @endphp
+                @if($wishlistCount > 0)
+                    <span class="absolute -top-1 -right-2 bg-red-500 text-white text-xs px-1 rounded-full">
+                        {{ $wishlistCount }}
+                    </span>
+                @endif
+            </a>
 
             <a href="{{ route('cart.view') }}" class="relative text-green-700 dark:text-green-300 hover:text-green-900 transition text-2xl">
                 🛒
@@ -59,6 +73,11 @@
                         {{ session('theme', 'light') === 'dark' ? '☀️ Light mode' : '🌙 Dark mode' }}
                     </button>
                 </form>
+
+                <a href="{{ route('wishlist') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">
+                    🧡 Wishlist
+                </a>
+
 
                 <a href="{{ route('cart.view') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">
                     🛒 Cart
