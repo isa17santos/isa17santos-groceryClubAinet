@@ -1,88 +1,95 @@
-<?php
+<div class="max-w-xl mx-auto mt-16 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow">
+    <h1 class="text-3xl font-bold text-center text-yellow-700 dark:text-yellow-700 mb-6">Register</h1>
 
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Livewire\Attributes\Layout;
-use Livewire\Volt\Component;
+    <form wire:submit.prevent="register" enctype="multipart/form-data" class="space-y-6">
 
-new #[Layout('layouts.guest')] class extends Component
-{
-    public string $name = '';
-    public string $email = '';
-    public string $password = '';
-    public string $password_confirmation = '';
-
-    /**
-     * Handle an incoming registration request.
-     */
-    public function register(): void
-    {
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $validated['password'] = Hash::make($validated['password']);
-
-        event(new Registered($user = User::create($validated)));
-
-        Auth::login($user);
-
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
-    }
-}; ?>
-
-<div>
-    <form wire:submit="register">
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+            <input id="name" type="text" wire:model.defer="name" required
+                class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500">
+            @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Email Address -->
+        <!-- Gender -->
         <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gender</label>
+            <select id="gender" wire:model.defer="gender" class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500">
+                <option value="">-- Select Gender --</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+            @error('gender') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
+
+        <!-- Email -->
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <input id="email" type="email" wire:model.defer="email" required
+                class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500">
+            @error('email') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input wire:model="password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div>
+            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+            <input id="password" type="password" wire:model.defer="password" required
+                class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500">
+            @error('password') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        <!-- Address (optional) -->
+        <div>
+            <label for="delivery_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Delivery address (optional)</label>
+            <textarea id="delivery_address" wire:model.defer="delivery_address"
+                class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500"></textarea>
+            @error('delivery_address') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}" wire:navigate>
-                {{ __('Already registered?') }}
-            </a>
+        <!-- NIF (optional) -->
+        <div class="mt-4">
+            <label for="nif" class="block text-sm font-medium text-gray-700">NIF (opcional)</label>
+            <input id="nif" type="text" wire:model.defer="nif" class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500" maxlength="9" inputmode="numeric" />
+            @error('nif') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+        <!-- Payment Details -->
+        <div class="mt-4">
+            <label for="payment_type" class="block text-sm font-medium text-gray-700">Preferred Payment Method (opcional)</label>
+            <select id="payment_type" wire:model.defer="payment_type" class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500">
+                <option value="">-- Select --</option>
+                <option value="Visa">Visa</option>
+                <option value="PayPal">PayPal</option>
+                <option value="MB WAY">MB WAY</option>
+            </select>
+            @error('payment_type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="mt-4">
+            <label for="payment_reference" class="block text-sm font-medium text-gray-700">Payment Reference (opcional)</label>
+            <input id="payment_reference" type="text" wire:model.defer="payment_reference" class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500" />
+            @error('payment_reference') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
+
+        <!-- Profile Photo (optional) -->
+        <div>
+            <label for="photo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Profile photo (optional)</label>
+            <input id="photo" type="file" wire:model.defer="photo"
+                class="mt-1 w-full text-sm text-gray-700 dark:text-gray-200">
+            @error('photo') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+        </div>
+
+        <!-- Submit -->
+        <div>
+            <button type="submit"
+                class="w-full bg-lime-600 text-white py-2 rounded-md hover:bg-lime-700 transition">
+                Register
+            </button>
         </div>
     </form>
+
+    <p class="text-sm text-center mt-6 text-gray-500 dark:text-gray-400">
+        Already registered?
+        <a href="{{ route('login') }}" class="text-blue-500 hover:underline">Login here</a>
+    </p>
 </div>

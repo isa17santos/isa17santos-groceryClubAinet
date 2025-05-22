@@ -2,18 +2,20 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +26,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'gender',
+        'photo',
+        'nif',
+        'default_delivery_address',
+        'default_payment_type',
+        'default_payment_reference',
+        'type',
+        'blocked',
     ];
 
     /**
@@ -46,8 +56,10 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'blocked' => 'boolean',
         ];
     }
+
 
 
     // ------------------- CODIGO RELACOES ----------------------
@@ -71,4 +83,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(SupplyOrder::class, 'registered_by_user_id');
     }
+
+
+    public function getProfileImageUrlAttribute(): string
+    {
+        $path = 'users/' . $this->photo;
+
+        if ($this->photo && file_exists(storage_path('app/public/' . $path))) {
+            return asset('storage/' . $path);
+        }
+
+        return asset('storage/users/anonymous.png');
+    }
+
+
 }
