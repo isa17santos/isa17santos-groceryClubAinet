@@ -6,8 +6,8 @@ class Payment
 {
     public static function payWithVisa($cardNumber, $cvc)
     {
-        // Simula pagamento com cartão Visa
-        return $cardNumber === '4242424242424242' && $cvc === '123';
+        // Aceita qualquer número de 16 dígitos e CVC de 3 dígitos
+        return preg_match('/^\d{16}$/', $cardNumber) && preg_match('/^\d{3}$/', $cvc);
     }
 
     public static function payWithPayPal($email)

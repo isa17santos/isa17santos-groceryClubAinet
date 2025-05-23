@@ -1,6 +1,17 @@
 <div class="max-w-xl mx-auto mt-16 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow">
     <h1 class="text-3xl font-bold text-center text-yellow-700 dark:text-yellow-700 mb-6">Register</h1>
 
+    @if ($showMessage)
+        <div class="text-green-600 text-center font-semibold mb-4">
+            Registo efetuado com sucesso. Verifique o seu email para ativar a conta.
+        </div>
+    @endif
+
+    @error('general')
+        <div class="text-red-600 text-center font-semibold mb-4">{{ $message }}</div>
+    @enderror
+
+
     <form wire:submit.prevent="register" enctype="multipart/form-data" class="space-y-6">
 
         <!-- Name -->
@@ -14,7 +25,7 @@
         <!-- Gender -->
         <div class="mt-4">
             <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gender</label>
-            <select id="gender" wire:model.defer="gender" class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500">
+            <select id="gender" wire:model.defer="gender" class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500 hover:border-gray-500">
                 <option value="">-- Select Gender --</option>
                 <option value="M">Male</option>
                 <option value="F">Female</option>

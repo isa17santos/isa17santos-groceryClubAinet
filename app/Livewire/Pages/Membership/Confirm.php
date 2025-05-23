@@ -19,13 +19,13 @@ class Confirm extends Component
         $card = $user->card;
         $fee = Setting::first()->membership_fee;
 
-        $rules = ['payment_type' => 'required|in:visa,paypal,mbway'];
+        $rules = ['payment_type' => 'required|in:visa,paypal,mb way'];
 
         if ($this->payment_type === 'visa') {
             $rules['payment_reference'] = 'required|digits:16';
         } elseif ($this->payment_type === 'paypal') {
             $rules['payment_reference'] = 'required|email';
-        } elseif ($this->payment_type === 'mbway') {
+        } elseif ($this->payment_type === 'mb way') {
             $rules['payment_reference'] = 'required|regex:/^9\d{8}$/';
         }
 
@@ -34,7 +34,7 @@ class Confirm extends Component
         $confirmed = match ($this->payment_type) {
             'visa' => Payment::payWithVisa($this->payment_reference, '123'),
             'paypal' => Payment::payWithPayPal($this->payment_reference),
-            'mbway' => Payment::payWithMBway($this->payment_reference),
+            'mb way' => Payment::payWithMBway($this->payment_reference),
         };
 
         if (!$confirmed) {
@@ -72,7 +72,7 @@ class Confirm extends Component
         $user->save();
 
         session()->flash('success', 'Membership confirmed!');
-        return redirect()->route('dashboard');
+        return redirect()->route('catalog');
     }
 
     public function render()

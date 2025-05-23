@@ -18,6 +18,8 @@ class Register extends Component
     public $delivery_address, $nif;
     public $payment_type, $payment_reference;
     public $photo;
+    public $showMessage = false;
+
 
     protected function rules()
     {
@@ -49,37 +51,42 @@ class Register extends Component
     {
         $this->validate();
 
+        $photoName = null;
+
         if ($this->photo) {
             $photoName = uniqid() . '.' . $this->photo->getClientOriginalExtension();
             $this->photo->storeAs('users', $photoName, 'public'); 
         }
         
-        $user = User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => Hash::make($this->password),
-            'gender' => $this->gender,
-            'photo' => $photoName,
-            'nif' => $this->nif,
-            'default_delivery_address' => $this->delivery_address,
-            'type' => 'pending_member',
-            'blocked' => false,
-            'default_payment_type' => $this->payment_type,
-            'default_payment_reference' => $this->payment_reference,
-        ]);
+        try {    
+            $user = User::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => Hash::make($this->password),
+                'gender' => $this->gender,
+                'photo' => $photoName,
+                'nif' => $this->nif,
+                'default_delivery_address' => $this->delivery_address,
+                'type' => 'pending_member',
+                'blocked' => false,
+                'default_payment_type' => $this->payment_type,
+                'default_payment_reference' => $this->payment_reference,
+            ]);
 
-        // Criar cartão virtual
-        Card::create([
-            'id' => $user->id,
-            'card_number' => random_int(100000, 999999),
-            'balance' => 0,
-        ]);
+            // Criar cartão virtual
+            Card::create([
+                'id' => $user->id,
+                'card_number' => random_int(100000, 999999),
+                'balance' => 0,
+            ]);
 
-        // Enviar email de verificação
-        event(new Registered($user));
+            // Enviar email de verificação
+            event(new Registered($user));
 
-        session()->flash('status', 'Registration successful! Please check your email to verify your account.');
-        return redirect()->route('login');
+            $this->showMessage = true;
+        } catch (\Exception $e) {
+            $this->addError('general', 'Erro ao registar utilizador: ' . $e->getMessage());
+        }
     }
 
     public function render()
