@@ -9,7 +9,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
-    // TO DO ...
+    protected $fillable = [
+        'member_id',
+        'status',
+        'total_items',
+        'shipping_cost',
+        'total',
+        'nif',
+        'delivery_address',
+        'pdf_receipt',
+        'cancel_reason',
+        'date',
+    ];
+
 
 
     // ------------------- CODIGO RELACOES ----------------------

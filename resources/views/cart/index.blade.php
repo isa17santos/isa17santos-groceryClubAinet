@@ -9,7 +9,7 @@
              class="mb-4 p-3 bg-green-100 dark:bg-green-200 text-green-700 rounded-md shadow-sm">
             {{ session('success') }}
         </div>
-        <meta http-equiv="refresh" content="2">
+        <meta http-equiv="refresh" content="3">
     @elseif(session('error'))
         <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 2000)"
              class="mb-4 p-3 bg-red-100 dark:bg-red-200 text-red-700 rounded-md shadow-sm">
@@ -72,30 +72,54 @@
         </table>
     </div>
 
-    <div class="mt-6 flex justify-between items-start flex-col md:flex-row gap-6">
-        <form method="POST" action="{{ route('cart.clear') }}">
-            @csrf
-            <button class="text-red-500 hover:underline">Clear Cart</button>
-        </form>
+    <div class="mt-4 mb-4">
+        <a href="{{ route('catalog') }}">
+            <button type="button" class="w-full bg-lime-500 text-white py-2 rounded-md hover:bg-lime-600 transition">
+                Add Product
+            </button>
+        </a>
+    </div>
 
-        <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow w-full md:w-1/2">
+    <form method="POST" action="{{ route('cart.clear') }}">
+        @csrf
+        <button class="mb-4 text-red-500 hover:underline">Clear Cart</button>
+    </form>
+
+    <!-- Paginação -->
+    <div class="mt-6 flex justify-center">
+        {{ $cartItems->links('vendor.pagination.tailwind-dark') }}
+    </div>
+
+    <div class="flex justify-between items-start flex-col md:flex-row gap-6">
+        
+        <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow w-full">
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Products total: {{ number_format($total, 2) }}€</p>
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Shipping: {{ number_format($shipping, 2) }}€</p>
             <p class="text-xl font-bold text-gray-800 dark:text-white">Total: {{ number_format($finalTotal, 2) }}€</p>
 
+            @if ($errors->any())
+                <div class="mt-4 mb-4 p-3 bg-red-100 dark:bg-red-200 text-red-700 rounded-md shadow-sm">
+                    <ul class="list-disc list-inside text-sm">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('cart.checkout') }}" class="mt-4 space-y-4">
                 @csrf
+                <div>
+                    <label for="delivery_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Delivery Address</label>
+                    <input type="text" name="delivery_address" id="delivery_address" value="{{ old('delivery_address', auth()->user()->default_delivery_address ?? '') }}"
+                           class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                </div>
                 <div>
                     <label for="nif" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIF</label>
                     <input type="text" name="nif" id="nif" value="{{ old('nif', auth()->user()->nif ?? '') }}"
                            class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
                 </div>
-                <div>
-                    <label for="delivery_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Delivery Address</label>
-                    <input type="text" name="delivery_address" id="delivery_address" value="{{ old('delivery_address', auth()->user()->address ?? '') }}"
-                           class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                </div>
-                <button type="submit" class="w-full bg-lime-600 text-white py-2 rounded-md hover:bg-lime-700 transition">
+                <button type="submit" class="w-full bg-lime-500 text-white py-2 rounded-md hover:bg-lime-600 transition">
                     Confirm Purchase
                 </button>
             </form>

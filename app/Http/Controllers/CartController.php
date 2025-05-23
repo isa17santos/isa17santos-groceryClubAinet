@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\ShippingCostSetting;
-
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 
 class CartController extends Controller
 {
@@ -33,32 +35,54 @@ class CartController extends Controller
 
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Produto adicionado ao carrinho!');
+        return redirect()->back()->with('success', 'Product added to cart!');
     }
 
-    public function view()
+    public function view(Request $request)
     {
         $cart = session('cart', []);
-        $products = Product::whereIn('id', array_keys($cart))->get();
+        $productIds = array_keys($cart);
 
-        $cartItems = [];
+        $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
+
+        $cartItemsArray = [];
         $total = 0;
-        
-        foreach ($products as $product) {
-            $quantity = $cart[$product->id]['quantity'];
+
+        foreach ($cart as $productId => $data) {
+            if (!isset($products[$productId])) continue;
+
+            $product = $products[$productId];
+            $quantity = $data['quantity'];
+
             $price = $product->has_discount && $quantity >= $product->discount_min_qty
                 ? $product->discounted_price
                 : $product->price;
+
             $subtotal = $quantity * $price;
             $total += $subtotal;
-            $cartItems[] = compact('product', 'quantity', 'price', 'subtotal');
+
+            $cartItemsArray[] = compact('product', 'quantity', 'price', 'subtotal');
         }
 
         $shipping = ShippingCostSetting::getCostForOrderTotal($total);
-
         $finalTotal = $total + $shipping;
 
+        // Paginação 
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 5;
+        $offset = ($currentPage - 1) * $perPage;
+        $itemsForCurrentPage = array_slice($cartItemsArray, $offset, $perPage);
+
+        $cartItems = new LengthAwarePaginator(
+            $itemsForCurrentPage,
+            count($cartItemsArray),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
         return view('cart.index', compact('cartItems', 'total', 'shipping', 'finalTotal'));
+
     }
 
     public function update(Request $request)
@@ -101,9 +125,10 @@ class CartController extends Controller
 
         $user = Auth::user();
 
-        if ($user->role !== 'club_member') {
+        if (!in_array($user->type, ['member', 'board'])) {
             return back()->with('error', 'Only club members can make purchases.');
         }
+
 
         $cart = session('cart', []);
         if (empty($cart)) {
@@ -114,10 +139,12 @@ class CartController extends Controller
 
         $total = 0;
         $items = [];
+        $totalItems = 0;
         $hasOutOfStock = false;
 
         foreach ($products as $product) {
             $quantity = $cart[$product->id]['quantity'];
+            $totalItems += $quantity;
             $price = $product->has_discount && $quantity >= $product->discount_min_qty
                 ? $product->discounted_price
                 : $product->price;
@@ -141,25 +168,48 @@ class CartController extends Controller
 
         $finalTotal = $total + $shipping;
 
-        if ($user->virtual_card_balance < $finalTotal) {
+        $card = $user->card;
+
+        if (!$card || $card->balance < $finalTotal) {
             return back()->with('error', 'Insufficient funds in virtual card.');
         }
 
+        $request->validate([
+            'nif' => 'nullable|string|max:9',
+            'delivery_address' => 'required|string|max:255',
+        ]);
+
+        $deliveryAddress = $request->input('delivery_address') ?? $user->default_delivery_address;
+
         $order = Order::create([
-            'user_id' => $user->id,
-            'status' => 'preparing',
+            'member_id' => $user->id,
+            'status' => 'pending',
+            'total_items' => $totalItems,
             'total' => $finalTotal,
             'shipping_cost' => $shipping,
             'nif' => $request->input('nif'),
-            'delivery_address' => $request->input('delivery_address'),
+            'delivery_address' => $deliveryAddress,
+            'date' => Carbon::now(),
         ]);
 
         foreach ($items as $item) {
-            $order->items()->create($item);
+            $order->products()->attach($item['product_id'], [
+                'quantity' => $item['quantity'],
+                'unit_price' => $item['unit_price'],
+                'discount' => $item['product']->discount ?? 0,
+                'subtotal' => $item['subtotal'],
+            ]);
+
+            // Atualizar stock
+            $product = Product::find($item['product_id']);
+            $product->stock -= $item['quantity'];
+            $product->save();
         }
 
-        $user->virtual_card_balance -= $finalTotal;
-        $user->save();
+
+        $card->balance -= $finalTotal;
+        $card->save();
+
 
         session()->forget('cart');
 
