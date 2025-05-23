@@ -67,7 +67,7 @@ Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
 
 
 //membership confirmation
-Route::get('/membershipConfirmation', [MembershipController::class, 'show'])->name('membership');    
+Route::get('/membershipConfirmation', [MembershipController::class, 'show'])->middleware('auth')->name('membership');    
 
 //--------------------------------------------------------------------------------
 
