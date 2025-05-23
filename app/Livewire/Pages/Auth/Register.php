@@ -49,19 +49,17 @@ class Register extends Component
     {
         $this->validate();
 
-        $photoPath = null;
-        if ($this->photo instanceof \Livewire\TemporaryUploadedFile) {
+        if ($this->photo) {
             $photoName = uniqid() . '.' . $this->photo->getClientOriginalExtension();
-            $this->photo->storeAs('users', $photoName, 'public');
-            
+            $this->photo->storeAs('users', $photoName, 'public'); 
         }
-        dd($photoPath);
+        
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
             'password' => Hash::make($this->password),
             'gender' => $this->gender,
-            'photo' => $photoPath,
+            'photo' => $photoName,
             'nif' => $this->nif,
             'default_delivery_address' => $this->delivery_address,
             'type' => 'pending_member',

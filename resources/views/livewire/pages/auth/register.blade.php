@@ -48,14 +48,14 @@
 
         <!-- NIF (optional) -->
         <div class="mt-4">
-            <label for="nif" class="block text-sm font-medium text-gray-700">NIF (opcional)</label>
+            <label for="nif" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIF (opcional)</label>
             <input id="nif" type="text" wire:model.defer="nif" class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500" maxlength="9" inputmode="numeric" />
             @error('nif') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
         <!-- Payment Details -->
         <div class="mt-4">
-            <label for="payment_type" class="block text-sm font-medium text-gray-700">Preferred Payment Method (opcional)</label>
+            <label for="payment_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Preferred Payment Method (opcional)</label>
             <select id="payment_type" wire:model.defer="payment_type" class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500">
                 <option value="">-- Select --</option>
                 <option value="Visa">Visa</option>
@@ -66,7 +66,7 @@
         </div>
 
         <div class="mt-4">
-            <label for="payment_reference" class="block text-sm font-medium text-gray-700">Payment Reference (opcional)</label>
+            <label for="payment_reference" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Payment Reference (opcional)</label>
             <input id="payment_reference" type="text" wire:model.defer="payment_reference" class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500" />
             @error('payment_reference') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
@@ -74,8 +74,8 @@
         <!-- Profile Photo (optional) -->
         <div>
             <label for="photo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Profile photo (optional)</label>
-            <input id="photo" type="file" wire:model.defer="photo"
-                class="mt-1 w-full text-sm text-gray-700 dark:text-gray-200">
+            <input id="photo" type="file" wire:model="photo"
+                class="mt-1 w-full text-sm text-gray-700 dark:text-gray-200" type="file">
             @error('photo') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
