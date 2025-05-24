@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -25,13 +27,6 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-
-//dark e light mode
-Route::post('/toggle-theme', function () {
-    $theme = session('theme', 'light') === 'dark' ? 'light' : 'dark';
-    session(['theme' => $theme]);
-    return back();
-})->name('toggle.theme');
 
 //wishlist
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
@@ -69,7 +64,6 @@ Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
 //membership confirmation
 Route::get('/membershipConfirmation', [MembershipController::class, 'show'])->middleware('auth')->name('membership');    
 
-//--------------------------------------------------------------------------------
 
 // Página para verificação de email pendente
 Route::get('/email/verify', function () {
@@ -104,3 +98,18 @@ Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
 Route::post('reset-password', [NewPasswordController::class, 'store'])
     ->middleware('guest')
     ->name('password.update');
+
+
+//card
+Route::get('/card', [CardController::class, 'show'])->name('card.show')->middleware('auth');
+Route::post('/card/credit', [CardController::class, 'credit'])->name('card.credit')->middleware('auth');
+
+//recibo pdf
+Route::get('/receipt/{order}', [\App\Http\Controllers\ReceiptController::class, 'download'])
+    ->middleware('auth')
+    ->name('receipt.download');
+
+// order details    
+Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'show'])
+    ->name('orders.show')
+    ->middleware('auth');

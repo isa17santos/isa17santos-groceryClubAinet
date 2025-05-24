@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Operation;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -175,7 +176,7 @@ class CartController extends Controller
         }
 
         $request->validate([
-            'nif' => 'nullable|string|max:9',
+            'nif' => 'nullable|digits:9',
             'delivery_address' => 'required|string|max:255',
         ]);
 
@@ -209,6 +210,15 @@ class CartController extends Controller
 
         $card->balance -= $finalTotal;
         $card->save();
+
+        Operation::create([
+            'card_id' => $card->id,
+            'type' => 'debit',
+            'value' => $finalTotal,
+            'date' => now()->toDateString(),
+            'order_id' => $order->id,
+        ]);
+
 
 
         session()->forget('cart');

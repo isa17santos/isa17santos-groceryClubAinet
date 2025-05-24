@@ -55,7 +55,7 @@
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $item['product']->id }}">
                             <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="0"
-                                   class="w-16 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-center">
+                                   class="w-16 rounded-md border border-gray-300 shadow-sm focus:ring-lime-500 focus:border-lime-500 dark:border-gray-600 bg-white dark:bg-gray-700 text-center">
                         </form>
                     </td>
                     <td class="py-4">{{ number_format($item['subtotal'], 2) }}€</td>
@@ -106,18 +106,18 @@
                     </ul>
                 </div>
             @endif
-
+            
             <form method="POST" action="{{ route('cart.checkout') }}" class="mt-4 space-y-4">
                 @csrf
                 <div>
                     <label for="delivery_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Delivery Address</label>
                     <input type="text" name="delivery_address" id="delivery_address" value="{{ old('delivery_address', auth()->user()->default_delivery_address ?? '') }}"
-                           class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                           class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-lime-500 focus:border-lime-500 dark:border-gray-600 bg-white dark:bg-gray-700">
                 </div>
                 <div>
                     <label for="nif" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIF</label>
                     <input type="text" name="nif" id="nif" value="{{ old('nif', auth()->user()->nif ?? '') }}"
-                           class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                           class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-lime-500 focus:border-lime-500 dark:border-gray-600 bg-white dark:bg-gray-700">
                 </div>
                 <button type="submit" class="w-full bg-lime-500 text-white py-2 rounded-md hover:bg-lime-600 transition">
                     Confirm Purchase
