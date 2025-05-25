@@ -33,9 +33,14 @@
             </div>
 
             <div class="hidden md:flex items-center gap-6">
-                <button type="button" onclick="toggleTheme()" class="text-xl hover:text-yellow-500 transition" title="Toggle dark mode">
+                <button type="button" onclick="toggleTheme()" class="text-3xl hover:text-yellow-500 transition" title="Toggle dark mode">
                     <span id="theme-icon">🌙</span>
                 </button>
+
+                <a href="{{ route('recommended') }}" class="text-3xl hover:text-yellow-500 transition">
+                    👑
+                </a>
+
 
                 <a href="{{ route('wishlist') }}" class="relative text-pink-600 hover:text-pink-800 transition" title="Wishlist" style="font-size: 1.8rem;">
                     🧡
@@ -90,7 +95,7 @@
                             <span id="theme-icon-mobile">🌙</span>
                             <span id="theme-label-mobile" class="ml-2">Dark Mode</span>
                         </button>
-
+                        <a href="{{ route('recommended') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">👑 Recommended </a>
                         <a href="{{ route('wishlist') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🧡 Wishlist</a>
                         <a href="{{ route('cart.view') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🛒 Cart</a>
                         @php $type = Auth::user()->type; @endphp
@@ -105,8 +110,9 @@
                     @else
                         <button type="button" onclick="toggleTheme()" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 w-full text-left">
                             <span id="theme-icon-mobile">🌙</span>
-                            <span id="theme-label-mobile" class="ml-2">Dark Mode</span>
+                            <span id="theme-label-mobile" class="ml">Dark Mode</span>
                         </button>
+                        <a href="{{ route('recommended') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">👑 Recommended </a>
                         <a href="{{ route('wishlist') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🧡 Wishlist</a>
                         <a href="{{ route('cart.view') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🛒 Cart</a>
                         <a href="{{ route('login') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🔐 Login</a>

@@ -14,6 +14,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\RecommendationController;
 use App\Livewire\Pages\Auth\Login;
 use App\Livewire\Pages\Auth\Register;
 
@@ -113,3 +114,6 @@ Route::get('/receipt/{order}', [\App\Http\Controllers\ReceiptController::class, 
 Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'show'])
     ->name('orders.show')
     ->middleware('auth');
+
+// recommended for you
+Route::get('/recommended', [RecommendationController::class, 'index'])->name('recommended');
