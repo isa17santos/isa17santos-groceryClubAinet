@@ -34,6 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'default_payment_reference',
         'type',
         'blocked',
+        'custom',
     ];
 
     /**
@@ -57,9 +58,33 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'blocked' => 'boolean',
+            'custom' => 'array',
         ];
     }
 
+    public function getProfileImageUrlAttribute(): string
+    {
+        $path = 'users/' . $this->photo;
+
+        if ($this->photo && file_exists(storage_path('app/public/' . $path))) {
+            return asset('storage/' . $path);
+        }
+
+        return asset('storage/users/anonymous.png');
+    }
+
+    public function getWishlist(): array
+    {
+        return $this->custom['wishlist'] ?? [];
+    }
+
+    public function setWishlist(array $wishlist): void
+    {
+        $custom = $this->custom ?? [];
+        $custom['wishlist'] = $wishlist;
+        $this->custom = $custom;
+        $this->save();
+    }
 
 
     // ------------------- CODIGO RELACOES ----------------------
@@ -83,18 +108,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(SupplyOrder::class, 'registered_by_user_id');
     }
-
-
-    public function getProfileImageUrlAttribute(): string
-    {
-        $path = 'users/' . $this->photo;
-
-        if ($this->photo && file_exists(storage_path('app/public/' . $path))) {
-            return asset('storage/' . $path);
-        }
-
-        return asset('storage/users/anonymous.png');
-    }
-
-
 }

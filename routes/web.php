@@ -45,6 +45,7 @@ Route::post('/wishlist/remove', [WishlistController::class, 'remove'])->name('wi
 
 // Login e registo 
 Route::get('/login', [LoginController::class, 'show'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
 
 // Logout

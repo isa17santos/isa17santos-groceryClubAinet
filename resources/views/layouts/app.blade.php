@@ -47,18 +47,20 @@
                     <span id="theme-icon">🌙</span>
                 </button>
 
-                <a href="{{ route('recommended') }}" class="text-3xl hover:text-yellow-500 transition">
-                    👑
-                </a>
+                @php $type = Auth::check() ? Auth::user()->type : null; @endphp
+                @if($type !== 'employee')
+                    <a href="{{ route('recommended') }}" class="text-3xl hover:text-yellow-500 transition">
+                        👑
+                    </a>
 
-
-                <a href="{{ route('wishlist') }}" class="relative text-pink-600 hover:text-pink-800 transition" title="Wishlist" style="font-size: 1.8rem;">
-                    🧡
-                    @php $wishlist = session('wishlist', []); $wishlistCount = count($wishlist); @endphp
-                    @if($wishlistCount > 0)
-                        <span class="absolute -top-1 -right-2 bg-red-500 text-white text-xs px-1 rounded-full">{{ $wishlistCount }}</span>
-                    @endif
-                </a>
+                    <a href="{{ route('wishlist') }}" class="relative text-pink-600 hover:text-pink-800 transition" title="Wishlist" style="font-size: 1.8rem;">
+                        🧡
+                        @php $wishlist = session('wishlist', []); $wishlistCount = count($wishlist); @endphp
+                        @if($wishlistCount > 0)
+                            <span class="absolute -top-1 -right-2 bg-red-500 text-white text-xs px-1 rounded-full">{{ $wishlistCount }}</span>
+                        @endif
+                    </a>
+                @endif
 
                 <a href="{{ route('cart.view') }}" class="relative text-green-700 dark:text-green-300 hover:text-green-900 transition text-2xl">
                     🛒
@@ -106,8 +108,10 @@
                             <span id="theme-icon-mobile">🌙</span>
                             <span id="theme-label-mobile" class="ml-2">Dark Mode</span>
                         </button>
-                        <a href="{{ route('recommended') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">👑 Recommended </a>
-                        <a href="{{ route('wishlist') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🧡 Wishlist</a>
+                        @if($type !== 'employee')
+                            <a href="{{ route('recommended') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">👑 Recommended </a>
+                            <a href="{{ route('wishlist') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🧡 Wishlist</a>
+                        @endif
                         <a href="{{ route('cart.view') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🛒 Cart</a>
                         @php $type = Auth::user()->type; @endphp
                         @if($type === 'member' || $type === 'board')
@@ -123,8 +127,10 @@
                             <span id="theme-icon-mobile">🌙</span>
                             <span id="theme-label-mobile" class="ml">Dark Mode</span>
                         </button>
-                        <a href="{{ route('recommended') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">👑 Recommended </a>
-                        <a href="{{ route('wishlist') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🧡 Wishlist</a>
+                        @if($type !== 'employee')
+                            <a href="{{ route('recommended') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">👑 Recommended </a>
+                            <a href="{{ route('wishlist') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🧡 Wishlist</a>
+                        @endif
                         <a href="{{ route('cart.view') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🛒 Cart</a>
                         <a href="{{ route('login') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🔐 Login</a>
                     @endauth
