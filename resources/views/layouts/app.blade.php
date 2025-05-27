@@ -65,6 +65,7 @@
                             <span>{{ Auth::user()->name }}</span>
                         </summary>
                         <div class="absolute right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow z-50 min-w-[250px] px-4 py-2 flex flex-col">
+                            <a href="{{ route('profile.show', Auth::user()) }}" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">👤 Profile</a>
                             <a href="{{ route('changePassword') }}" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🔑 Change password</a>
                             @php $type = Auth::user()->type; @endphp
                             @if($type === 'member' || $type === 'board')
@@ -90,7 +91,7 @@
                             <img src="{{ Auth::user()->profile_image_url }}" alt="Profile" class="w-9 h-9 rounded-full object-cover border">
                             <span>{{ Auth::user()->name }}</span>
                         </div>
-
+                        <a href="{{ route('profile.show', Auth::user()) }}" class="block px-9 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">👤 Profile</a>
                         <button type="button" onclick="toggleTheme()" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 w-full text-left">
                             <span id="theme-icon-mobile">🌙</span>
                             <span id="theme-label-mobile" class="ml-2">Dark Mode</span>
