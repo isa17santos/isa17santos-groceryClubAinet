@@ -7,10 +7,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Product extends Model
 {
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'name', 'category_id', 'price', 'stock', 'description', 'photo',
+        'discount_min_qty', 'discount', 'stock_lower_limit', 'stock_upper_limit'
+    ];
+
     // imagem dos produtos
     public function getImageUrlAttribute(): string
     {

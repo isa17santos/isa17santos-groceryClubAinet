@@ -8,6 +8,7 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\WishlistController;
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -18,6 +19,11 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\RecommendationController;
 use App\Livewire\Pages\Auth\Login;
 use App\Livewire\Pages\Auth\Register;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ShippingCostController;
+
 
 //rota catalog visualization
 Route::get('/', [CatalogController::class, 'index'])->name('catalog');
@@ -34,6 +40,7 @@ Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.c
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
 Route::post('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
+
 
 
 // Login e registo 
@@ -128,3 +135,21 @@ Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'sho
 
 // recommended for you
 Route::get('/recommended', [RecommendationController::class, 'index'])->name('recommended');
+
+//ver o que é o admin? ver o que é o can:manage? 
+
+Route::middleware(['auth', 'can:manage,App\Models\User'])->group(function () {
+// rota de categorias
+Route::resource('categories', CategoryController::class);
+
+// rota de produtos
+Route::resource('products', ProductController::class);
+
+// rota de gestão da taxa de adesão
+Route::get('settings/membership-fee', [SettingsController::class, 'edit'])->name('settings.edit');
+Route::put('settings/membership-fee', [SettingsController::class, 'update'])->name('settings.update');
+
+// rota de custos de envio
+Route::resource('shipping-costs', ShippingCostController::class);
+});
+

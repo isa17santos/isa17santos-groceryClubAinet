@@ -23,7 +23,6 @@
 
     @livewireScripts
     <body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
-
         <nav class="fixed top-0 w-full z-50 bg-white dark:bg-gray-800 shadow-md h-[72px] px-6 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <a href="{{ route('catalog') }}" class="hover:opacity-80 transition">
@@ -33,6 +32,17 @@
             </div>
 
             <div class="hidden md:flex items-center gap-6">
+                @can('manage', App\Models\User::class)
+                <div class="relative group">
+                    <button class="text-yellow-700 dark:text-yellow-500 font-semibold">Business Settings ▼</button>
+                    <div class="absolute hidden group-hover:block bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-md py-2 mt-1 w-48 z-50">
+                        <a href="{{ route('categories.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Categories</a>
+                        <a href="{{ route('products.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Products</a>
+                        <a href="{{ route('settings.edit') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Membership Fee</a>
+                        <a href="{{ route('shipping-costs.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Shipping Costs</a>
+                    </div>
+                </div>
+                @endcan
                 <button type="button" onclick="toggleTheme()" class="text-3xl hover:text-yellow-500 transition" title="Toggle dark mode">
                     <span id="theme-icon">🌙</span>
                 </button>
