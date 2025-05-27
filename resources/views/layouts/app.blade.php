@@ -26,6 +26,18 @@
 
         <!-- Desktop Navbar -->
         <div class="hidden md:flex items-center gap-6">
+            @can('manage', App\Models\User::class)
+                <div class="relative group">
+                    <button class="text-yellow-700 dark:text-yellow-500 font-semibold">Business Settings ▼</button>
+                    <div class="absolute hidden group-hover:block bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-md py-2 mt-1 w-48 z-50">
+                        <a href="{{ route('categories.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Categories</a>
+                        <a href="{{ route('products.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Products</a>
+                        <a href="{{ route('settings.edit') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Membership Fee</a>
+                        <a href="{{ route('shipping-costs.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Shipping Costs</a>
+                    </div>
+                </div>
+            @endcan
+
             <form action="{{ route('toggle.theme') }}" method="POST">
                 @csrf
                 <button type="submit" class="text-xl hover:text-yellow-500 transition" title="Toggle dark mode">
@@ -33,7 +45,6 @@
                 </button>
             </form>
 
-            <!-- Wishlist Link -->
             <a href="{{ route('wishlist') }}" class="relative text-pink-600 hover:text-pink-800 transition" title="Wishlist" style="font-size: 1.8rem;">
                 🧡
                 @php
@@ -66,7 +77,19 @@
         <!-- Mobile Burger Menu -->
         <details class="md:hidden relative">
             <summary class="text-3xl cursor-pointer select-none">☰</summary>
-            <div class="absolute right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-md py-2 w-40 text-left flex flex-col z-50">
+            <div class="absolute right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-md py-2 w-48 text-left flex flex-col z-50">
+                @can('manage', App\Models\User::class)
+                    <details>
+                        <summary class="px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">Business Settings ▼</summary>
+                        <div class="pl-4">
+                            <a href="{{ route('categories.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Categories</a>
+                            <a href="{{ route('products.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Products</a>
+                            <a href="{{ route('settings.edit') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Membership Fee</a>
+                            <a href="{{ route('shipping-costs.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Shipping Costs</a>
+                        </div>
+                    </details>
+                @endcan
+
                 <form action="{{ route('toggle.theme') }}" method="POST" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">
                     @csrf
                     <button type="submit" class="w-full text-left">
@@ -74,21 +97,11 @@
                     </button>
                 </form>
 
-                <a href="{{ route('wishlist') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">
-                    🧡 Wishlist
-                </a>
-
-
-                <a href="{{ route('cart.view') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">
-                    🛒 Cart
-                </a>
-
-                <a href="{{ route('login') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">
-                    🔐 Login
-                </a>
+                <a href="{{ route('wishlist') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🧡 Wishlist</a>
+                <a href="{{ route('cart.view') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🛒 Cart</a>
+                <a href="{{ route('login') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🔐 Login</a>
             </div>
         </details>
-
     </nav>
 
     <main class="min-h-screen mt-[120px]">
