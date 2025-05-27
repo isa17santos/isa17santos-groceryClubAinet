@@ -51,6 +51,7 @@ Route::get('/register', [RegisterController::class, 'show'])->name('register');
 // Logout
 Route::post('/logout', function () {
     Auth::logout();
+    session()->forget('wishlist');
     session()->invalidate();
     session()->regenerateToken();
     return redirect()->route('catalog');

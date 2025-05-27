@@ -80,10 +80,21 @@ class Register extends Component
                 'balance' => 0,
             ]);
 
+            //Autenticar o utilizador
+            auth()->login($user);
+
+            //Guardar a wishlist da sessão na base de dados
+            $sessionWishlist = session('wishlist', []);
+            $user->setWishlist($sessionWishlist);
+
+            //Atualizar a sessão para manter o contador correto na navbar
+            session(['wishlist' => $sessionWishlist]);
+
             // Enviar email de verificação
             event(new Registered($user));
 
             $this->showMessage = true;
+
         } catch (\Exception $e) {
             $this->addError('general', 'Erro ao registar utilizador: ' . $e->getMessage());
         }

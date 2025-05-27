@@ -21,7 +21,18 @@ class Login extends Component
         if (Auth::attempt($credentials, false)) {
             session()->regenerate();
             $user = Auth::user();
-            session(['wishlist' => $user->getWishlist()]);
+
+            //Merge da wishlist da sessão com a da base de dados
+            $sessionWishlist = session('wishlist', []);
+            $dbWishlist = $user->getWishlist();
+
+            $mergedWishlist = array_unique(array_merge($dbWishlist, $sessionWishlist));
+
+            //Guardar wishlist unificada
+            $user->setWishlist($mergedWishlist);
+
+            //Atualizar sessão
+            session(['wishlist' => $mergedWishlist]);
             return redirect()->intended(route('catalog'));
         }
 
