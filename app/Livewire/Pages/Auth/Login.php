@@ -20,6 +20,8 @@ class Login extends Component
 
         if (Auth::attempt($credentials, false)) {
             session()->regenerate();
+            $user = Auth::user();
+            session(['wishlist' => $user->getWishlist()]);
             return redirect()->intended(route('catalog'));
         }
 
