@@ -26,15 +26,19 @@
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
                 <input type="text" name="name" id="name" value="{{ old('name', $category->name) }}" required
-                       class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white shadow-sm">
+                       class="mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500">
                 @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
             <div>
-                <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image (file name)</label>
-                <input type="text" name="image" id="image" value="{{ old('image', $category->image) }}"
-                       class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white shadow-sm">
+                <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Imagem da Categoria</label>
+                <input type="file" name="image" id="image" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 @error('image') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
+                @if($category->image)
+                    <p class="mt-2">Imagem atual:</p>
+                    <img src="{{ asset('storage/categories/' . $category->image) }}" alt="{{ $category->name }}" class="w-32 h-32 object-cover rounded">
+                @endif
             </div>
 
             <div class="pt-4 flex justify-between">

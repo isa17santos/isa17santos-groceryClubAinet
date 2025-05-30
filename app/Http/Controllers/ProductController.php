@@ -12,7 +12,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with(['category'])->withTrashed()->paginate(20);
-        return view('admin.products.index', compact('products'));
+        return view('edit_catalog.index', compact('products'));
     }
 
     public function create()
@@ -76,6 +76,5 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Produto eliminado com sucesso.');
     }
 }
-
 
 

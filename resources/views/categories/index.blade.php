@@ -35,9 +35,11 @@
                 @forelse ($categories as $category)
                 <tr class="border-t border-gray-200 dark:border-gray-600">
                     <td class="py-4">{{ $category->name }}</td>
-                    <td class="py-4">{{ $category->image }}</td>
+                <td class="py-4">
+                <img src="{{ asset('storage/categories/' . $category->image) }}" alt="{{ $category->name }}" class="w-16 h-16 object-cover rounded">
+            </td>
                     <td class="py-4 flex items-center space-x-2">
-                        <a href="{{ route('categories.edit', $category) }}" class="text-blue-400 hover:text-blue-600">Edit</a>
+                        <a href="{{ route('categories.edit', $category) }}" class="text-green-700 dark:text-green-300">Edit</a>
                         <form action="{{ route('categories.destroy', $category) }}" method="POST" class="inline ml-2" onsubmit="return confirm('Are you sure you want to delete this category?');">
                             @csrf
                             @method('DELETE')

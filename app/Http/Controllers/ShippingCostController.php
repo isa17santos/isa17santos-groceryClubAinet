@@ -11,7 +11,7 @@ class ShippingCostController extends Controller
     public function index()
     {
         $shippingCosts = ShippingCostSetting::orderBy('min_value_threshold')->get();
-        return view('admin.shipping_costs.index', compact('shippingCosts'));
+        return view('shipping_costs.index', compact('shippingCosts'));
     }
 
     public function create()

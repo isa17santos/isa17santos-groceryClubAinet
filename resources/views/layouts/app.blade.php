@@ -33,14 +33,18 @@
 
             <div class="hidden md:flex items-center gap-6">
                 @can('manage', App\Models\User::class)
-                <div class="relative group">
-                    <button class="text-yellow-700 dark:text-yellow-500 font-semibold">Business Settings ▼</button>
-                    <div class="absolute hidden group-hover:block bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-md py-2 mt-1 w-48 z-50">
-                        <a href="{{ route('categories.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Categories</a>
-                        <a href="{{ route('products.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Products</a>
-                        <a href="{{ route('settings.edit') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Membership Fee</a>
-                        <a href="{{ route('shipping-costs.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Shipping Costs</a>
-                    </div>
+                <div class="flex justify-center">
+                    <details class="relative text-center">
+                        <summary class="cursor-pointer text-green-700 dark:text-green-300 font-semibold py-2">
+                            Business Settings
+                        </summary>
+                        <div class="absolute mt-2 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow z-50 w-48 px-2 py-2 flex flex-col text-center">
+                            <a href="{{ route('categories.index') }}" class="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 text-sm">Categories</a>
+                            <a href="{{ route('products.index') }}" class="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 text-sm">Products</a>
+                            <a href="{{ route('settings.edit') }}" class="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 text-sm">Membership Fee</a>
+                            <a href="{{ route('shipping-costs.index') }}" class="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 text-sm">Shipping Costs</a>
+                        </div>
+                    </details>
                 </div>
                 @endcan
                 <button type="button" onclick="toggleTheme()" class="text-3xl hover:text-yellow-500 transition" title="Toggle dark mode">
@@ -122,6 +126,21 @@
                             @csrf
                             <button type="submit" class="w-full text-left px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-red-600">🚪 Logout</button>
                         </form>
+                        @can('manage', App\Models\User::class)
+                        <div class="flex justify-left">
+                            <details class="relative text-left">
+                                <summary class="px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-green-700 dark:text-green-300">
+                                    💼 Business Settings
+                                </summary>
+                                <div class="absolute mt-2 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow z-50 w-48 px-2 py-2 flex flex-col text-center">
+                                    <a href="{{ route('categories.index') }}" class="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 text-sm">Categories</a>
+                                    <a href="{{ route('products.index') }}" class="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 text-sm">Products</a>
+                                    <a href="{{ route('settings.edit') }}" class="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 text-sm">Membership Fee</a>
+                                    <a href="{{ route('shipping-costs.index') }}" class="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 text-sm">Shipping Costs</a>
+                                </div>
+                            </details>
+                        </div>
+                        @endcan
                     @else
                         <button type="button" onclick="toggleTheme()" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300 w-full text-left">
                             <span id="theme-icon-mobile">🌙</span>
