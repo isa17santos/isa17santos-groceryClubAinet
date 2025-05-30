@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('feedback_message'))
+    <div class="mb-4 p-3 rounded-md shadow-sm 
+        {{ session('feedback_type') === 'like' ? 'bg-green-100 dark:bg-green-200 text-green-700' : 'bg-red-100 dark:bg-red-200 text-red-700' }}">
+        {{ session('feedback_message') }}
+    </div>
+    <meta http-equiv="refresh" content="3">
+@endif
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
     <h1 class="text-4xl font-bold text-center text-yellow-700 dark:text-yellow-700 mb-10">
         Recommended for you
@@ -126,7 +134,26 @@
                                     Add
                                 </button>
                             </form>
-                        </div>
+
+                            
+                            @auth
+                                <div class="flex items-center gap-1">
+                                    <form method="POST" action="{{ route('recommended.feedback') }}" class="inline">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <input type="hidden" name="feedback" value="like">
+                                        <button type="submit" class="text-3xl">👍</button>
+                                    </form>
+
+                                    <form method="POST" action="{{ route('recommended.feedback') }}" class="inline">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <input type="hidden" name="feedback" value="dislike">
+                                        <button type="submit" class="text-3xl">👎</button>
+                                    </form>
+                                </div>
+                            @endauth
+                        </div>    
                     </div>
                 </div>
             @endforeach

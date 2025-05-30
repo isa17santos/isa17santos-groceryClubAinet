@@ -137,8 +137,10 @@ Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'sho
 
 // recommended for you
 Route::get('/recommended', [RecommendationController::class, 'index'])->name('recommended');
+Route::post('/recommended/feedback', [RecommendationController::class, 'storeFeedback'])
+     ->middleware(['auth'])
+     ->name('recommended.feedback');
 
-//ver o que é o admin? ver o que é o can:manage? 
 
 Route::middleware(['auth', 'can:manage,App\Models\User'])->group(function () {
 // rota de categorias
