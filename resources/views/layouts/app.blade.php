@@ -87,6 +87,12 @@
                             @if($type === 'member' || $type === 'board')
                                 <a href="{{ route('card.show') }}" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">💳 Card</a>
                             @endif
+
+                            @if(in_array(Auth::user()->type, ['employee', 'board']))
+                                <a href="{{ route('order.pending') }}" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📦 Pending Orders</a>
+                                <a href="{{ route('inventory.index') }}" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📊 Inventory</a>
+                            @endif
+
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-red-500">🚪 Logout</button>
@@ -122,6 +128,13 @@
                             <a href="{{ route('card.show') }}" class="px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-green-700 dark:text-green-300">💳 Card</a>
                         @endif
                         <a href="{{ route('changePassword') }}" class="px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-green-700 dark:text-green-300">🔑 Change password</a>
+                        
+                        @if(in_array(Auth::user()->type, ['employee', 'board']))
+                            <a href="{{ route('order.pending') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📦 Pending Orders</a>
+                            <a href="{{ route('inventory.index') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📊 Inventory</a>
+                        @endif
+
+                        
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="w-full text-left px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-red-600">🚪 Logout</button>

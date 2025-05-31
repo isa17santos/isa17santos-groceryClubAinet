@@ -23,6 +23,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingCostController;
+use App\Http\Controllers\InventoryController;
 
 
 //rota catalog visualization
@@ -119,8 +120,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
-
 //card
 Route::get('/card', [CardController::class, 'show'])->name('card.show')->middleware('auth');
 Route::post('/card/credit', [CardController::class, 'credit'])->name('card.credit')->middleware('auth');
@@ -130,7 +129,7 @@ Route::get('/receipt/{order}', [\App\Http\Controllers\ReceiptController::class, 
     ->middleware('auth')
     ->name('receipt.download');
 
-// order details    
+// order details (for club members)    
 Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'show'])
     ->name('orders.show')
     ->middleware('auth');
@@ -155,5 +154,42 @@ Route::put('settings/membership-fee', [SettingsController::class, 'update'])->na
 
 // rota de custos de envio
 Route::resource('shipping-costs', ShippingCostController::class);
+});
+
+
+//pending orders
+Route::middleware(['auth', 'can:viewPendingOrders'])->group(function () {
+    Route::get('/order/pending', [OrderController::class, 'pending'])->name('order.pending');
+});
+
+
+//pending orders details (only for employees and board members)
+Route::get('/order/pending/{order}', [OrderController::class, 'showPendingDetails'])
+    ->middleware(['auth', 'can:viewPendingOrders'])
+    ->name('order.pending.details');
+
+
+//only employees can mark as completed
+Route::patch('/order/{order}/complete', [OrderController::class, 'complete'])
+    ->middleware(['auth', 'can:complete,order'])
+    ->name('order.complete');
+
+//only board members can mark as canceled
+Route::patch('/order/{order}/cancel', [OrderController::class, 'cancel'])
+    ->middleware(['auth', 'can:cancel,order'])
+    ->name('order.cancel');
+
+// download receipt
+Route::get('/receipt/download/{order}', [OrderController::class, 'downloadReceipt'])
+    ->middleware(['auth', 'can:viewReceipt,order'])
+    ->name('receipt.download');
+
+
+
+// inventory management
+Route::middleware(['auth'])->group(function () {
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+    Route::get('/inventory/{product}/adjust', [InventoryController::class, 'adjustForm'])->name('inventory.adjust');
+    Route::post('/inventory/{product}/adjust', [InventoryController::class, 'adjust'])->name('inventory.adjust.store');
 });
 
