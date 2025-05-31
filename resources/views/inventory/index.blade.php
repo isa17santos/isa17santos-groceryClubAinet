@@ -31,7 +31,7 @@
                         <td class="px-4 py-2 font-medium">{{ $product->name }}</td>
                         <td class="px-4 py-2">{{ $product->stock }}</td>
                         <td class="px-4 py-2">
-                            @if ($product->stock == 0)
+                            @if ($product->stock <= 0)
                                 <span class="text-red-600 font-semibold">Out of stock</span>
                             @elseif ($product->stock < $product->stock_lower_limit)
                                 <span class="text-yellow-500 font-semibold">Low</span>

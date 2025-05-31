@@ -14,10 +14,12 @@ class InventoryController extends Controller
         $filter = $request->get('filter');
 
         $products = match($filter) {
-            'low' => Product::whereColumn('stock', '<', 'stock_lower_limit')->get(),
-            'out' => Product::where('stock', 0)->get(),
+            'low' => Product::whereColumn('stock', '<', 'stock_lower_limit')
+                ->where('stock', '>', 0)
+                ->paginate(20),
+            'out' => Product::where('stock', '<=', 0)->paginate(20),
             default => Product::paginate(20)->withQueryString(),
-        };
+        };  
 
         return view('inventory.index', compact('products', 'filter'));
     }
