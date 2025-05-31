@@ -38,7 +38,7 @@ class OrderController extends Controller
     {
         $orders = Order::with('user')
             ->where('status', 'pending')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->paginate(8);
 
         return view('order.pending', compact('orders'));
@@ -95,19 +95,19 @@ class OrderController extends Controller
 
     public function cancel(Request $request, Order $order)
     {
-        $this->authorize('cancel', $order); 
+        $this->authorize('cancel', $order);
 
-        $request->validate([
-            'reason' => 'required|string|max:255',
-        ]);
+        // motivo opcional, pode ser null ou vazio
+        $reason = $request->input('reason_option') ?: null;
 
-        DB::transaction(function () use ($order, $request) {
+        DB::transaction(function () use ($order, $reason) {
             $order->update([
                 'status' => 'canceled',
-                'cancel_reason' => $request->input('reason'),
+                'cancel_reason' => $reason,
             ]);
 
             $order->user->card->increment('balance', $order->total);
+
             Operation::create([
                 'card_id' => $order->user->card->id,
                 'type' => 'credit',
@@ -122,6 +122,7 @@ class OrderController extends Controller
 
         return redirect()->route('order.pending')->with('success', 'Order canceled and refunded.');
     }
+
 
     protected function generatePdfReceipt(Order $order): string
     {

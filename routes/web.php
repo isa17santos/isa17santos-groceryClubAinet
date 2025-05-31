@@ -158,14 +158,14 @@ Route::resource('shipping-costs', ShippingCostController::class);
 
 
 //pending orders
-Route::middleware(['auth', 'can:viewPendingOrders'])->group(function () {
+Route::middleware(['auth', 'can:viewAny,App\Models\Order'])->group(function () {
     Route::get('/order/pending', [OrderController::class, 'pending'])->name('order.pending');
 });
 
 
 //pending orders details (only for employees and board members)
 Route::get('/order/pending/{order}', [OrderController::class, 'showPendingDetails'])
-    ->middleware(['auth', 'can:viewPendingOrders'])
+    ->middleware(['auth', 'can:view,order']) 
     ->name('order.pending.details');
 
 

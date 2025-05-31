@@ -35,17 +35,6 @@
             </form>
         @endcan
 
-        @can('cancel', $order)
-            <form method="POST" action="{{ route('order.cancel', $order) }}" class="text-center">
-                @csrf
-                @method('PATCH')
-                <input type="hidden" name="reason" value="Cancelled by board decision.">
-                <button type="submit"
-                    class="bg-red-600 text-white py-2 px-5 rounded-md hover:bg-red-700 transition">
-                    Cancel Order
-                </button>
-            </form>
-        @endcan
     </div>    
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">
         <h2 class="px-10 text-2xl font-semibold text-lime-700 dark:text-lime-400 mb-4">Products</h2>
@@ -104,5 +93,25 @@
             <p><strong>NIF:</strong> {{ $order->nif }}</p>
         @endif
     </div>
+
+    @can('cancel', $order)
+        <form method="POST" action="{{ route('order.cancel', $order) }}" class="mt-6 bg-red-100 dark:bg-red-900 p-4 rounded-xl shadow-md">
+            @csrf
+            @method('PATCH')
+
+            <label for="reason_option" class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Reason for cancellation (optional):</label>
+            <select name="reason_option" id="reason_option" class="w-full min-w-0 rounded-md border-gray-300 shadow-sm focus:ring-lime-500 focus:border-lime-500 dark:bg-gray-700 dark:text-white">
+                <option value="" selected>-- Select --</option>
+                <option value="Excessive processing time">Excessive processing time</option>
+                <option value="Cancellation request from the club member">Cancellation request from the club member</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <button type="submit" class="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                Cancel order
+            </button>
+        </form>
+
+    @endcan
 </div>
 @endsection

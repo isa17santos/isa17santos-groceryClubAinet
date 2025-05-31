@@ -200,11 +200,6 @@ class CartController extends Controller
                 'discount' => $item['product']->discount ?? 0,
                 'subtotal' => $item['subtotal'],
             ]);
-
-            // Atualizar stock
-            $product = Product::find($item['product_id']);
-            $product->stock -= $item['quantity'];
-            $product->save();
         }
 
 

@@ -3,7 +3,18 @@
 @section('content')
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
 
-    <h1 class="text-4xl font-bold text-yellow-700 dark:text-yellow-700 mb-6">Receipt</h1>
+    <div class="header">
+        <div class="header-cell left">
+            <img src="{{ public_path('images/logo.png') }}" alt="Logo" class="logo">
+        </div>
+        <div class="header-cell center">
+            <h1 class="title">Receipt</h1>
+        </div>
+        <div class="header-cell right">
+            <!-- Espaço vazio para manter o centro visual -->
+        </div>
+    </div>
+
 
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">
         <h2 class="px-10 text-2xl font-semibold text-lime-700 dark:text-lime-400 mb-4">Products</h2>

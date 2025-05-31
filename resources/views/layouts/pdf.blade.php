@@ -8,10 +8,52 @@
             font-family: DejaVu Sans, sans-serif;
             font-size: 12px;
             color: #1a202c;
+            margin: 5px;
         }
 
-        h1, h2 {
-            color: #2c7a7b;
+        /* LOGO + TÍTULO */
+        .header {
+            display: table;
+            width: 100%;
+            margin-bottom: 20px;
+            table-layout: fixed;
+        }
+
+        .header-cell {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .header-cell.left {
+            width: 25%;
+        }
+
+        .header-cell.center {
+            width: 50%;
+            text-align: center;
+        }
+
+        .header-cell.right {
+            width: 25%;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #b7791f; /* yellow-700 */
+            margin: 0;
+        }
+        
+        h2 {
+            font-size: 20px;
+            color: #84cc16; /* lime-700 */
+            margin-top: 30px;
+            margin-bottom: 10px;
         }
 
         table {
@@ -27,7 +69,7 @@
         }
 
         th {
-            background-color: #e6fffa;
+            background-color:rgb(240, 198, 44); 
         }
 
         img {
