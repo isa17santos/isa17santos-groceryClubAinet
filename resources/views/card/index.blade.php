@@ -79,10 +79,12 @@
                                     <span class="ml-2 text-gray-500 dark:text-gray-300">
                                         ({{ $op->credit_type }} via {{ $op->payment_type }})
                                     </span>
-                                @elseif($op->type === 'debit' && $op->order_id && $op->order->pdf_receipt)
-                                    <a href="{{ route('receipt.download', $op->order_id) }}" target="_blank" class="ml-2 text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                                        📄 Receipt
-                                    </a>
+                                @elseif($op->type === 'debit' && $op->order_id)
+                                    @if($op->order->pdf_receipt)
+                                        <a href="{{ route('receipt.downloadReceipt', $op->order_id) }}" target="_blank" class="ml-2 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                            📄 Receipt
+                                        </a>
+                                    @endif
 
                                     <a href="{{ route('orders.show', $op->order_id) }}" class="ml-2 text-sm text-yellow-600 dark:text-yellow-400 hover:underline">
                                         More details

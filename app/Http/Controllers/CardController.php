@@ -7,11 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Payment;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CardController extends Controller
 {
+    use AuthorizesRequests;
+
     public function show(Request $request)
     {
+        $this->authorize('access-card');
+
         $card = Auth::user()->card;
         $operations = Operation::where('card_id', $card->id)
                         ->orderByDesc('date')
@@ -23,6 +28,8 @@ class CardController extends Controller
 
     public function credit(Request $request)
     {
+        $this->authorize('access-card');
+
         $request->validate([
             'payment_type' => 'required|in:Visa,PayPal,MB WAY',
             'payment_reference' => 'required|string',

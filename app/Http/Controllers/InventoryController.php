@@ -6,11 +6,16 @@ use App\Models\Product;
 use App\Models\StockAdjustment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class InventoryController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(Request $request)
     {
+        $this->authorize('access-inventory');
+
         $filter = $request->get('filter');
 
         $products = match($filter) {
@@ -26,11 +31,15 @@ class InventoryController extends Controller
 
     public function adjustForm(Product $product)
     {
+        $this->authorize('access-inventory');
+
         return view('inventory.adjust', compact('product'));
     }
 
     public function adjust(Request $request, Product $product)
     {
+        $this->authorize('access-inventory');
+
         $request->validate(['quantity' => 'required|integer']);
 
         $diff = $request->input('quantity') - $product->stock;
@@ -51,6 +60,8 @@ class InventoryController extends Controller
 
     public function adjustments()
     {
+        $this->authorize('access-inventory');
+
         $adjustments = StockAdjustment::with(['product', 'user'])
             ->orderByDesc('created_at')
             ->paginate(20);

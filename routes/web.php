@@ -126,8 +126,8 @@ Route::post('/card/credit', [CardController::class, 'credit'])->name('card.credi
 
 //recibo pdf
 Route::get('/receipt/{order}', [\App\Http\Controllers\ReceiptController::class, 'download'])
-    ->middleware('auth')
-    ->name('receipt.download');
+     ->middleware(['auth', 'can:viewReceipt,order'])
+     ->name('receipt.downloadReceipt');
 
 // order details (for club members)    
 Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'show'])
@@ -179,7 +179,7 @@ Route::patch('/order/{order}/cancel', [OrderController::class, 'cancel'])
     ->middleware(['auth', 'can:cancel,order'])
     ->name('order.cancel');
 
-// download receipt
+// download receipt from email
 Route::get('/receipt/download/{order}', [OrderController::class, 'downloadReceipt'])
     ->middleware(['auth', 'can:viewReceipt,order'])
     ->name('receipt.download');

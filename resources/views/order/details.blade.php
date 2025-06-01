@@ -73,7 +73,7 @@
 
         @if($order->pdf_receipt)
         <div class="mt-4">
-            <a href="{{ route('receipt.download', $order->id) }}" target="_blank"
+            <a href="{{ route('receipt.downloadReceipt', $order->id) }}" target="_blank"
                class="text-blue-600 hover:underline">📄 Download Receipt</a>
         </div>
         @endif

@@ -9,6 +9,8 @@ use App\Policies\UserPolicy;
 use App\Policies\BusinessSettingsPolicy;
 use App\Models\Order;
 use App\Policies\OrderPolicy;
+use App\Policies\InventoryPolicy;
+use App\Policies\CardPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('manage', [BusinessSettingsPolicy::class, 'manage']);
         Gate::define('viewPendingOrders', [OrderPolicy::class, 'viewPending']);
-
+        Gate::define('access-inventory', [InventoryPolicy::class, 'access']);
+        Gate::define('access-card', [CardPolicy::class, 'access']);
     }
 }

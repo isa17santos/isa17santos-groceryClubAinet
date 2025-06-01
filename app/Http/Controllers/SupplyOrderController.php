@@ -6,11 +6,16 @@ use App\Models\SupplyOrder;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class SupplyOrderController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
+        $this->authorize('access-inventory');
+
         $orders = SupplyOrder::with(['product', 'user'])
             ->orderByRaw("CASE WHEN status = 'requested' THEN 0 ELSE 1 END")
             ->orderByDesc('created_at')
@@ -21,6 +26,8 @@ class SupplyOrderController extends Controller
 
     public function create(Request $request)
     {
+        $this->authorize('access-inventory');
+
         $products = Product::orderBy('name')->get();
 
         $oldOrders = old('orders', $request->input('orders', []));
@@ -44,6 +51,8 @@ class SupplyOrderController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('access-inventory');
+
         $orders = $request->input('orders', []);
 
         // Ações baseadas no botão clicado
@@ -90,6 +99,8 @@ class SupplyOrderController extends Controller
 
     public function generateAutomatically()
     {
+        $this->authorize('access-inventory');
+
         $products = Product::whereColumn('stock', '<', 'stock_lower_limit')->get();
 
         foreach ($products as $product) {
@@ -109,6 +120,8 @@ class SupplyOrderController extends Controller
 
     public function markAsCompleted(SupplyOrder $order)
     {
+        $this->authorize('access-inventory');
+
         if ($order->status !== 'requested') {
             return back()->withErrors('Only requested orders can be completed.');
         }
@@ -121,6 +134,8 @@ class SupplyOrderController extends Controller
 
     public function destroy(SupplyOrder $order)
     {
+        $this->authorize('access-inventory');
+
         if ($order->status !== 'requested') {
             return back()->withErrors('Only requested orders can be deleted.');
         }

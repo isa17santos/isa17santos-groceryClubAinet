@@ -19,6 +19,12 @@ class Operation extends Model
         'payment_type',
         'payment_reference',
         'debit_type',
+        'order_id',
+    ];
+
+    protected $casts = [
+        'date' => 'datetime',
+        'value' => 'decimal:2',
     ];
 
     // ------------------- CODIGO RELACOES ----------------------
