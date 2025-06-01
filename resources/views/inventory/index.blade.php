@@ -1,19 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-6xl mx-auto mt-16 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow">
-    <h1 class="text-3xl font-bold text-center text-yellow-700 dark:text-yellow-700 mb-6">Inventory</h1>
+<div class="max-w-6xl mx-auto mt-16 bg-white dark:bg-gray-800 p-5 rounded-2xl shadow">
+    <div class="mt-8 mb-10 relative flex items-center justify-center">
+        <h1 class="text-3xl font-bold text-yellow-700 dark:text-yellow-700">Inventory</h1>
+        
+    </div>
 
-    <form method="GET" class="mb-6 text-center">
-        <label for="filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by stock:</label>
-        <select name="filter" id="filter"
-            onchange="this.form.submit()"
-            class="w-48 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500 mx-auto">
-            <option value="">All</option>
-            <option value="low" @selected($filter === 'low')>Low Stock</option>
-            <option value="out" @selected($filter === 'out')>Out of Stock</option>
-        </select>
-    </form>
+    <div class="flex justify-between items-center flex-wrap gap-4 mb-10">
+        <div class="flex-shrink-0">
+            <a href="{{ route('supply_orders.index') }}">
+                <button type="button" class="bg-lime-600 text-white py-2 px-4 rounded-md hover:bg-lime-600 transition">
+                    Supply Order
+                </button>
+            </a>
+        </div>
+
+        <form method="GET" class="flex flex-col items-center">
+            <label for="filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by stock:</label>
+            <select name="filter" id="filter" onchange="this.form.submit()" class="w-48 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-lime-500 focus:border-lime-500 mx-auto">
+                <option value="">All</option>
+                <option value="low" @selected($filter === 'low')>Low Stock</option>
+                <option value="out" @selected($filter === 'out')>Out of Stock</option>
+            </select>
+        </form>
+
+        <div class="flex-shrink-0">
+            <a href="{{ route('inventory.adjustments') }}">
+                <button type="button" class="bg-lime-600 text-white py-2 px-4 rounded-md hover:bg-lime-600 transition">
+                    Adjustment History
+                </button>
+            </a>
+        </div>
+    </div>
 
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-800 dark:text-gray-200 border-separate border-spacing-y-3">

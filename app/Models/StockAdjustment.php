@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StockAdjustment extends Model
 {
-    // TO DO ...
-
+    protected $fillable = ['product_id', 'registered_by_user_id', 'quantity_changed'];
 
     // ------------------- CODIGO RELACOES ----------------------
     public function user(): BelongsTo

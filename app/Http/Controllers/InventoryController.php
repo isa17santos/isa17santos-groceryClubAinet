@@ -49,4 +49,13 @@ class InventoryController extends Controller
     }
 
 
+    public function adjustments()
+    {
+        $adjustments = StockAdjustment::with(['product', 'user'])
+            ->orderByDesc('created_at')
+            ->paginate(20);
+
+        return view('inventory.adjustments', compact('adjustments'));
+    }
+
 }

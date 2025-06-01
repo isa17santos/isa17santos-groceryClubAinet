@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SupplyOrder extends Model
 {
-    // TO DO ...
-
+    protected $fillable = ['product_id', 'registered_by_user_id', 'status', 'quantity'];
 
     // ------------------- CODIGO RELACOES ----------------------
     public function user(): BelongsTo

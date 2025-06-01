@@ -186,10 +186,21 @@ Route::get('/receipt/download/{order}', [OrderController::class, 'downloadReceip
 
 
 
-// inventory management
+// inventory management e supply orders 
 Route::middleware(['auth'])->group(function () {
+    // inventory management
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
     Route::get('/inventory/{product}/adjust', [InventoryController::class, 'adjustForm'])->name('inventory.adjust');
     Route::post('/inventory/{product}/adjust', [InventoryController::class, 'adjust'])->name('inventory.adjust.store');
+    Route::get('/inventory/adjustments', [InventoryController::class, 'adjustments'])->name('inventory.adjustments');
+
+    // supply orders
+    Route::get('/inventory/supply-orders', [\App\Http\Controllers\SupplyOrderController::class, 'index'])->name('supply_orders.index');
+    Route::get('/inventory/supply-orders/create', [\App\Http\Controllers\SupplyOrderController::class, 'create'])->name('supply_orders.create');
+    Route::post('/inventory/supply-orders', [\App\Http\Controllers\SupplyOrderController::class, 'store'])->name('supply_orders.store');
+    Route::post('/inventory/supply-orders/auto', [\App\Http\Controllers\SupplyOrderController::class, 'generateAutomatically'])->name('supply_orders.auto');
+    Route::post('/inventory/supply-orders/{order}/complete', [\App\Http\Controllers\SupplyOrderController::class, 'markAsCompleted'])->name('supply_orders.complete');
+    Route::delete('/inventory/supply-orders/{order}', [\App\Http\Controllers\SupplyOrderController::class, 'destroy'])->name('supply_orders.destroy');
 });
+
 

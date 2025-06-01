@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Operation;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Payment;
-use App\Models\Setting;
+use App\Models\Settings;
 
 class Confirm extends Component
 {
@@ -17,7 +17,7 @@ class Confirm extends Component
     {
         $user = Auth::user();
         $card = $user->card;
-        $fee = Setting::first()->membership_fee;
+        $fee = Settings::first()->membership_fee;
 
         $rules = ['payment_type' => 'required|in:visa,paypal,mb way'];
 
