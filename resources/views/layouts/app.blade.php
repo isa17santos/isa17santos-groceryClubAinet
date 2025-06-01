@@ -93,6 +93,10 @@
                                 <a href="{{ route('inventory.index') }}" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📊 Inventory</a>
                             @endif
 
+                            @if($type === 'board')
+                                <a href="{{ route('board.users.index') }}" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📂 User Management</a>
+                            @endif
+
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-red-500">🚪 Logout</button>
@@ -134,6 +138,9 @@
                             <a href="{{ route('inventory.index') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📊 Inventory</a>
                         @endif
 
+                        @if($type === 'board')
+                            <a href="{{ route('board.users.index') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📂 User Management</a>
+                        @endif
                         
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

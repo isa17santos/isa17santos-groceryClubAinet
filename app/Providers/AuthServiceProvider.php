@@ -35,5 +35,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('viewPendingOrders', [OrderPolicy::class, 'viewPending']);
         Gate::define('access-inventory', [InventoryPolicy::class, 'access']);
         Gate::define('access-card', [CardPolicy::class, 'access']);
+        Gate::define('manageUsers', [UserPolicy::class, 'manageUsers']);
     }
 }

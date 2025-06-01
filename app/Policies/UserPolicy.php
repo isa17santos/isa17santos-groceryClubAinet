@@ -49,6 +49,12 @@ class UserPolicy
 
 
 
+    public function manageUsers(User $user) 
+    {
+        return $user->type === 'board';
+    }
+
+
 
     /**
      * Determine whether the user can delete the model.

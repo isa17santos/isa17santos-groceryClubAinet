@@ -24,6 +24,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingCostController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\UserController;
 
 
 //rota catalog visualization
@@ -117,6 +118,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+
+// User Management
+Route::middleware(['auth', 'can:manageUsers'])->prefix('board/users')->name('board.users.')->group(function () {
+    // Lista, criação, edição e remoção 
+    Route::get('/', [UserController::class, 'index'])->name('index');
+    Route::get('/create', [UserController::class, 'create'])->name('create');
+    Route::post('/', [UserController::class, 'store'])->name('store');
+    Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+    Route::put('/{user}', [UserController::class, 'update'])->name('update');
+    Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+
+    // Ações específicas (PATCH)
+    Route::patch('/{user}/block', [UserController::class, 'toggleBlock'])->name('block');
+    Route::patch('/{user}/cancel', [UserController::class, 'cancelMembership'])->name('cancel');
+    Route::patch('/{user}/promote', [UserController::class, 'promote'])->name('promote');
+    Route::patch('/{user}/demote', [UserController::class, 'demote'])->name('demote');
 });
 
 
