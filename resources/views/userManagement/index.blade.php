@@ -19,29 +19,44 @@
         <h1 class="text-3xl font-bold text-yellow-700 dark:text-yellow-700">User Management</h1>
     </div>
 
-    {{-- Filtros --}}
-    <form method="GET" class="flex flex-wrap justify-center gap-4 mb-6">
-        <select name="type"
-            class="px-9 py-2 rounded-md border-gray-300 shadow-sm focus:ring-lime-500 focus:border-lime-500 dark:bg-gray-700 dark:text-white">
-            <option value="">All Types</option>
-            <option value="member">Member</option>
-            <option value="board">Board</option>
-            <option value="employee">Employee</option>
-            <option value="pending_member">Pending</option>
-        </select>
+    <div class="flex justify-between items-center mb-6 mx-6">
+        <!-- Filtros -->
+        <form method="GET" class="flex flex-wrap justify-center gap-4 mb-6 ml-10">
+            <select name="type"
+                class="px-9 py-2 rounded-md border-gray-300 shadow-sm focus:ring-lime-500 focus:border-lime-500 dark:bg-gray-700 dark:text-white">
+                <option value="" {{ request('type') === null ? 'selected' : '' }}>All Types</option>
+                <option value="member" {{ request('type') === 'member' ? 'selected' : '' }}>Member</option>
+                <option value="board" {{ request('type') === 'board' ? 'selected' : '' }}>Board</option>
+                <option value="employee" {{ request('type') === 'employee' ? 'selected' : '' }}>Employee</option>
+                <option value="pending_member" {{ request('type') === 'pending_member' ? 'selected' : '' }}>Pending</option>
+            </select>
 
-        <select name="blocked"
-            class="px-9 py-2 rounded-md border-gray-300 shadow-sm focus:ring-lime-500 focus:border-lime-500 dark:bg-gray-700 dark:text-white">
-            <option value="">All Status</option>
-            <option value="0">Active</option>
-            <option value="1">Blocked</option>
-        </select>
+            <select name="blocked"
+                class="px-9 py-2 rounded-md border-gray-300 shadow-sm focus:ring-lime-500 focus:border-lime-500 dark:bg-gray-700 dark:text-white">
+                <option value="" {{ request('blocked') === null ? 'selected' : '' }}>All Status</option>
+                <option value="0" {{ request('blocked') === '0' ? 'selected' : '' }}>Active</option>
+                <option value="1" {{ request('blocked') === '1' ? 'selected' : '' }}>Blocked</option>
+            </select>
 
-        <button type="submit"
-            class="bg-lime-600 text-white py-2 px-8 rounded-md hover:bg-lime-700 transition text-md">
-            Apply Filters
-        </button>
-    </form>
+            <button type="submit"
+                class="bg-lime-600 text-white py-2 px-8 rounded-md hover:bg-lime-700 transition text-md">
+                Apply Filters
+            </button>
+
+            @if(request()->filled('type') || request()->filled('blocked'))
+                <a href="{{ route('board.users.index') }}"
+                    class="text-sm text-red-600 dark:text-red-400 hover:underline self-center">
+                    Clear Filters
+                </a>
+            @endif
+        </form>
+
+        <a href="{{ route('board.users.create') }}">
+            <button class="bg-lime-600 text-white py-2 px-6 rounded-md hover:bg-lime-700 transition text-md mb-6 mr-10">
+                Add Employee
+            </button>
+        </a>
+    </div>
 
     <div class="overflow-x-auto ml-6 mr-6">
         <table class="w-full text-sm text-left text-gray-800 dark:text-gray-200 border-separate border-spacing-y-3">
@@ -56,7 +71,13 @@
             </thead>
             <tbody>
                 @forelse ($users as $user)
-                    <tr class="bg-white dark:bg-gray-700 shadow rounded-lg">
+                    <tr class="shadow rounded-lg
+                        @if($user->id === auth()->id())
+                            bg-orange-300 dark:bg-yellow-800
+                        @else
+                            bg-white dark:bg-gray-700
+                        @endif
+                    ">
                         <td class="px-4 py-2 font-medium">{{ $user->name }}</td>
                         <td class="px-4 py-2">{{ $user->email }}</td>
                         <td class="px-4 py-2 capitalize">{{ $user->type }}</td>
@@ -78,7 +99,7 @@
                                 </form>
                             @endif
 
-                            {{-- Promote/Demote --}}
+                            <!-- Promote/Demote -->
                             @if($user->type === 'member')
                                 <form method="POST" action="{{ route('board.users.promote', $user) }}">
                                     @csrf @method('PATCH')
@@ -91,7 +112,7 @@
                                 </form>
                             @endif
 
-                            {{-- Cancel Membership --}}
+                            <!-- Cancel Membership  -->
                             @if(in_array($user->type, ['member', 'board']) && $user->id !== auth()->id())
                                 <form method="POST" action="{{ route('board.users.cancel', $user) }}">
                                     @csrf @method('PATCH')
@@ -99,7 +120,7 @@
                                 </form>
                             @endif
 
-                            {{-- Employees only: edit/delete --}}
+                            <!-- Employees only: edit/delete -->
                             @if($user->type === 'employee')
                                 <a href="{{ route('board.users.edit', $user) }}"
                                     class="text-indigo-500 hover:underline">Edit</a>

@@ -18,21 +18,26 @@ class Login extends Component
             'password' => 'required|string',
         ]);
 
+        // Obter o utilizador antes de tentar autenticar
+        $user = \App\Models\User::where('email', $this->email)->first();
+
+        // Verificar se está bloqueado
+        if ($user && $user->blocked) {
+            $this->errorMessage = 'Your account has been blocked.';
+            return;
+        }
+
+        // Tentar autenticar
         if (Auth::attempt($credentials, false)) {
             session()->regenerate();
-            $user = Auth::user();
 
-            //Merge da wishlist da sessão com a da base de dados
+            // Wishlist merge
             $sessionWishlist = session('wishlist', []);
-            $dbWishlist = $user->getWishlist();
-
+            $dbWishlist = Auth::user()->getWishlist();
             $mergedWishlist = array_unique(array_merge($dbWishlist, $sessionWishlist));
-
-            //Guardar wishlist unificada
-            $user->setWishlist($mergedWishlist);
-
-            //Atualizar sessão
+            Auth::user()->setWishlist($mergedWishlist);
             session(['wishlist' => $mergedWishlist]);
+
             return redirect()->intended(route('catalog'));
         }
 

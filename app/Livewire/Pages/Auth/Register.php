@@ -80,6 +80,9 @@ class Register extends Component
                 'balance' => 0,
             ]);
 
+            // envia email de verificação
+            event(new Registered($user)); 
+
             //Autenticar o utilizador
             auth()->login($user);
 
@@ -89,9 +92,6 @@ class Register extends Component
 
             //Atualizar a sessão para manter o contador correto na navbar
             session(['wishlist' => $sessionWishlist]);
-
-            // Enviar email de verificação
-            event(new Registered($user));
 
             $this->showMessage = true;
 

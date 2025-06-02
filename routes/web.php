@@ -129,6 +129,7 @@ Route::middleware(['auth', 'can:manageUsers'])->prefix('board/users')->name('boa
     Route::post('/', [UserController::class, 'store'])->name('store');
     Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
     Route::put('/{user}', [UserController::class, 'update'])->name('update');
+    Route::patch('/{user}/remove-photo', [UserController::class, 'removePhoto'])->name('removePhoto');
     Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
 
     // Ações específicas (PATCH)
