@@ -43,21 +43,26 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
 Route::post('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
+//login e registo
+Route::middleware(['guest'])->group(function () {
+    // Login e registo 
+    Route::get('/login', [LoginController::class, 'show'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/register', [RegisterController::class, 'show'])->name('register');
 
+        
+});
 
-// Login e registo 
-Route::get('/login', [LoginController::class, 'show'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::get('/register', [RegisterController::class, 'show'])->name('register');
-
-// Logout
-Route::post('/logout', function () {
-    Auth::logout();
-    session()->forget('wishlist');
-    session()->invalidate();
-    session()->regenerateToken();
-    return redirect()->route('catalog');
-})->name('logout');
+Route::middleware(['auth'])->group(function () {
+   // Logout
+    Route::post('/logout', function () {
+        Auth::logout();
+        session()->forget('wishlist');
+        session()->invalidate();
+        session()->regenerateToken();
+        return redirect()->route('catalog');
+    })->name('logout');
+});
 
 //change password (rota protegida)
 Route::get('/changePassword', [ChangePasswordController::class, 'show'])
@@ -73,16 +78,8 @@ Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
 
-
 //membership confirmation
 Route::get('/membershipConfirmation', [MembershipController::class, 'show'])->middleware('auth')->name('membership');    
-
-
-// Página para verificação de email pendente
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
 
 // Reenviar email de verificação
 Route::post('/email/verification-notification', function () {
@@ -90,15 +87,6 @@ Route::post('/email/verification-notification', function () {
     return back()->with('status', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-// Rotas para utilizadores autenticados e verificados
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    // Exemplo: rota para pagar inscrição
-    Route::get('/membership/confirm', \App\Livewire\Pages\Membership\Confirm::class)->name('membership.confirm');
-});
 
 Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
     ->middleware('guest')
@@ -111,6 +99,13 @@ Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
 Route::post('reset-password', [NewPasswordController::class, 'store'])
     ->middleware('guest')
     ->name('password.update');
+
+
+// Página para verificação de email pendente
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
 
 
 //Profile
@@ -162,18 +157,18 @@ Route::post('/recommended/feedback', [RecommendationController::class, 'storeFee
 
 
 Route::middleware(['auth', 'can:manage,App\Models\User'])->group(function () {
-// rota de categorias
-Route::resource('categories', CategoryController::class);
+    // rota de categorias
+    Route::resource('categories', CategoryController::class);
 
-// rota de produtos
-Route::resource('products', ProductController::class);
+    // rota de produtos
+    Route::resource('products', ProductController::class);
 
-// rota de gestão da taxa de adesão
-Route::get('settings/membership-fee', [SettingsController::class, 'edit'])->name('settings.edit');
-Route::put('settings/membership-fee', [SettingsController::class, 'update'])->name('settings.update');
+    // rota de gestão da taxa de adesão
+    Route::get('settings/membership-fee', [SettingsController::class, 'edit'])->name('settings.edit');
+    Route::put('settings/membership-fee', [SettingsController::class, 'update'])->name('settings.update');
 
-// rota de custos de envio
-Route::resource('shipping-costs', ShippingCostController::class);
+    // rota de custos de envio
+    Route::resource('shipping-costs', ShippingCostController::class);
 });
 
 
