@@ -142,7 +142,7 @@ Route::post('/recommended/feedback', [RecommendationController::class, 'storeFee
      ->name('recommended.feedback');
 
 
-Route::middleware(['auth', 'can:manage,App\Models\User'])->group(function () {
+//Route::middleware(['auth', 'can:manage,App\Models\User'])->group(function () {
 // rota de categorias
 Route::resource('categories', CategoryController::class);
 
@@ -155,5 +155,5 @@ Route::put('settings/membership-fee', [SettingsController::class, 'update'])->na
 
 // rota de custos de envio
 Route::resource('shipping-costs', ShippingCostController::class);
-});
+//});
 

@@ -16,7 +16,8 @@ class ShippingCostController extends Controller
 
     public function create()
     {
-        return view('admin.shipping_costs.create');
+        return view('shipping_costs.create');
+
     }
 
     public function store(Request $request)
@@ -28,12 +29,12 @@ class ShippingCostController extends Controller
         ]);
 
         ShippingCostSetting::create($request->all());
-        return redirect()->route('shipping-costs.index')->with('success', 'Custo de envio adicionado.');
+        return redirect()->route('shipping-costs.index')->with('success', 'Shipping cost added.');
     }
 
     public function edit(ShippingCostSetting $shippingCost)
     {
-        return view('admin.shipping_costs.edit', compact('shippingCost'));
+        return view('shipping_costs.edit', compact('shippingCost'));
     }
 
     public function update(Request $request, ShippingCostSetting $shippingCost)
@@ -45,13 +46,12 @@ class ShippingCostController extends Controller
         ]);
 
         $shippingCost->update($request->all());
-        return redirect()->route('shipping-costs.index')->with('success', 'Custo de envio atualizado.');
+        return redirect()->route('shipping-costs.index')->with('success', 'Shipping cost updated.');
     }
 
     public function destroy(ShippingCostSetting $shippingCost)
     {
         $shippingCost->delete();
-        return redirect()->route('shipping-costs.index')->with('success', 'Custo de envio eliminado.');
+        return redirect()->route('shipping-costs.index')->with('success', 'Shipping cost deleted.');
     }
-    
 }

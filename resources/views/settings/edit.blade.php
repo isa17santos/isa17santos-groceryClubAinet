@@ -32,8 +32,8 @@
             </div>
 
             <div class="pt-4 flex justify-between">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
-                <a href="{{ url()->previous() }}" class="text-gray-600 dark:text-gray-400 hover:underline">Cancel</a>
+                <button type="submit" class="bg-lime-600 text-white px-4 py-2 rounded hover:bg-lime-700">Save</button>
+                <a href="{{ url()->previous() }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Cancel</a>
             </div>
         </form>
     </div>

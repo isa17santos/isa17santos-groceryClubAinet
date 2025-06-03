@@ -39,7 +39,7 @@
                     <td class="py-4">{{ number_format($cost->max_value_threshold, 2) }}€</td>
                     <td class="py-4">{{ number_format($cost->shipping_cost, 2) }}€</td>
                     <td class="py-4 flex items-center space-x-2">
-                        <a href="{{ route('shipping-costs.edit', $cost) }}" class="text-blue-400 hover:text-blue-600">Edit</a>
+                        <a href="{{ route('shipping-costs.edit', $cost) }}" class="text-green-700 dark:text-green-300">Edit</a>
                         <form action="{{ route('shipping-costs.destroy', $cost) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this shipping cost?');">
                             @csrf
                             @method('DELETE')

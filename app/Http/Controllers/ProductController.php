@@ -11,14 +11,15 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['category'])->withTrashed()->paginate(20);
+        $products = Product::orderBy('name')->paginate(20);
         return view('edit_catalog.index', compact('products'));
     }
 
     public function create()
     {
         $categories = Category::all();
-        return view('admin.products.create', compact('categories'));
+        return view('edit_catalog.create', compact('categories'));
+
     }
 
     public function store(Request $request)
@@ -29,21 +30,70 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'description' => 'required|string',
-            'photo' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'discount_min_qty' => 'nullable|integer|min:1',
             'discount' => 'nullable|numeric|min:0',
             'stock_lower_limit' => 'required|integer|min:0',
             'stock_upper_limit' => 'required|integer|min:0',
         ]);
 
-        Product::create($request->all());
-        return redirect()->route('products.index')->with('success', 'Produto criado com sucesso.');
+        dd($request->all());
+
+
+        // Verificar se existe um produto com o mesmo nome (mesmo soft deleted)
+        $existing = Product::withTrashed()->where('name', $request->name)->first();
+
+        if ($existing) {
+            // Se já existir, restaura (caso soft deleted) e atualiza
+            $existing->restore();
+            $existing->category_id = $request->category_id;
+            $existing->price = $request->price;
+            $existing->stock = $request->stock;
+            $existing->description = $request->description;
+            $existing->discount_min_qty = $request->discount_min_qty;
+            $existing->discount = $request->discount;
+            $existing->stock_lower_limit = $request->stock_lower_limit;
+            $existing->stock_upper_limit = $request->stock_upper_limit;
+
+            if ($request->hasFile('photo')) {
+                $imageName = time() . '_' . $request->file('photo')->getClientOriginalName();
+                $request->file('photo')->storeAs('products', $imageName, 'public');
+                $existing->photo = $imageName;
+            }
+
+            $existing->save();
+            return redirect()->route('products.index')->with('success', 'Product restored and updated successfully.');
+        }
+
+        // Se não existir, criar um novo produto normalmente
+        $product = new Product();
+        $product->name = $request->name;
+        $product->category_id = $request->category_id;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->description = $request->description;
+        $product->discount_min_qty = $request->discount_min_qty;
+        $product->discount = $request->discount;
+        $product->stock_lower_limit = $request->stock_lower_limit;
+        $product->stock_upper_limit = $request->stock_upper_limit;
+
+        if ($request->hasFile('photo')) {
+            $imageName = time() . '_' . $request->file('photo')->getClientOriginalName();
+            $request->file('photo')->storeAs('products', $imageName, 'public');
+            $product->photo = $imageName;
+        }
+
+        $product->save();
+
+        return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
+
+
 
     public function edit(Product $product)
     {
         $categories = Category::all();
-        return view('admin.products.edit', compact('product', 'categories'));
+        return view('edit_catalog.edit', compact('product', 'categories'));
     }
 
     public function update(Request $request, Product $product)
@@ -54,18 +104,40 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'description' => 'required|string',
-            'photo' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'discount_min_qty' => 'nullable|integer|min:1',
             'discount' => 'nullable|numeric|min:0',
             'stock_lower_limit' => 'required|integer|min:0',
             'stock_upper_limit' => 'required|integer|min:0',
         ]);
 
-        $product->update($request->all());
-        return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso.');
+        // Atualiza campos normais
+        $product->name = $request->name;
+        $product->category_id = $request->category_id;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->description = $request->description;
+        $product->discount_min_qty = $request->discount_min_qty;
+        $product->discount = $request->discount;
+        $product->stock_lower_limit = $request->stock_lower_limit;
+        $product->stock_upper_limit = $request->stock_upper_limit;
+
+        // Upload de imagem se existir
+        if ($request->hasFile('photo')) {
+            $imageName = time() . '_' . $request->file('photo')->getClientOriginalName();
+            $request->file('photo')->storeAs('products', $imageName, 'public');
+            $product->photo = $imageName;
+        }
+
+        $product->save();
+
+        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
 
-    //perguntar ao chat se isto é um soft delete 
+
+
+
+
     public function destroy(Product $product)
     {
         if ($product->orders()->exists()) {
@@ -73,7 +145,7 @@ class ProductController extends Controller
         } else {
             $product->forceDelete();
         }
-        return redirect()->route('products.index')->with('success', 'Produto eliminado com sucesso.');
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
 }
 

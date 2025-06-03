@@ -19,7 +19,7 @@
     @endif
 
     <div class="overflow-x-auto shadow rounded-lg bg-white dark:bg-gray-800 p-6">
-        <form method="POST" action="{{ route('categories.update', $category) }}" class="space-y-4">
+        <form method="POST" action="{{ route('categories.update', $category) }}" enctype="multipart/form-data" class="space-y-4">
             @csrf
             @method('PUT')
 
@@ -31,19 +31,19 @@
             </div>
 
             <div>
-                <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Imagem da Categoria</label>
+                <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category image</label>
                 <input type="file" name="image" id="image" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 @error('image') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
                 @if($category->image)
-                    <p class="mt-2">Imagem atual:</p>
+                    <p class="mt-2">Current image:</p>
                     <img src="{{ asset('storage/categories/' . $category->image) }}" alt="{{ $category->name }}" class="w-32 h-32 object-cover rounded">
                 @endif
             </div>
 
             <div class="pt-4 flex justify-between">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update Category</button>
-                <a href="{{ route('categories.index') }}" class="text-gray-600 dark:text-gray-400 hover:underline">Cancel</a>
+                <button type="submit" class="bg-lime-600 text-white px-4 py-2 rounded hover:bg-lime-700">Update Category</button>
+                <a href="{{ route('categories.index') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 ml-2">Cancel</a>
             </div>
         </form>
     </div>

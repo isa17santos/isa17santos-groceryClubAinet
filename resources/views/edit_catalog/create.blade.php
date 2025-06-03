@@ -9,24 +9,22 @@
              class="mb-4 p-3 bg-green-100 dark:bg-green-200 text-green-700 rounded-md shadow-sm">
             {{ session('success') }}
         </div>
-        <meta http-equiv="refresh" content="2">
     @elseif(session('error'))
         <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 2000)"
              class="mb-4 p-3 bg-red-100 dark:bg-red-200 text-red-700 rounded-md shadow-sm">
             {{ session('error') }}
         </div>
-        <meta http-equiv="refresh" content="2">
     @endif
 
     <div class="overflow-x-auto shadow rounded-lg bg-white dark:bg-gray-800 p-6">
-        <form method="POST" action="{{ route('products.store') }}" class="space-y-4">
+        <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data" class="space-y-4">
             @csrf
 
-            @include('admin.products.partials.form', ['product' => null])
+            @include('edit_catalog.partials.form', ['product' => null, 'categories' => $categories])
 
             <div class="pt-4 flex justify-between">
                 <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Create Product</button>
-                <a href="{{ route('products.index') }}" class="text-gray-600 dark:text-gray-400 hover:underline">Cancel</a>
+                <a href="{{ route('products.index') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Cancel</a>
             </div>
         </form>
     </div>
