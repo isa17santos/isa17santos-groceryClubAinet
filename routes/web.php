@@ -160,6 +160,8 @@ Route::middleware(['auth', 'can:manage,App\Models\User'])->group(function () {
     // rota de categorias
     Route::resource('categories', CategoryController::class);
 
+
+
     // rota de produtos
     Route::resource('products', ProductController::class);
 
@@ -170,6 +172,7 @@ Route::middleware(['auth', 'can:manage,App\Models\User'])->group(function () {
     // rota de custos de envio
     Route::resource('shipping-costs', ShippingCostController::class);
 });
+
 
 
 //pending orders

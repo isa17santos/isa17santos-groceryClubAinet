@@ -23,11 +23,11 @@
             @csrf
             @method('PUT')
 
-            @include('admin.shipping_costs.partials.form')
+            @include('shipping_costs.partials.form')
 
             <div class="pt-4 flex justify-between">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update</button>
-                <a href="{{ route('shipping-costs.index') }}" class="text-gray-600 dark:text-gray-400 hover:underline">Cancel</a>
+                <button type="submit" class="bg-lime-600 text-white px-4 py-2 rounded hover:bg-lime-700">Update</button>
+                <a href="{{ route('shipping-costs.index') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 ml-2">Cancel</a>
             </div>
         </form>
     </div>

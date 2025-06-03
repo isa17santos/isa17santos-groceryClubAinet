@@ -22,11 +22,11 @@
         <form method="POST" action="{{ route('shipping-costs.store') }}" class="space-y-4">
             @csrf
 
-            @include('admin.shipping_costs.partials.form')
+            @include('shipping_costs.partials.form')
 
             <div class="pt-4 flex justify-between">
                 <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Save</button>
-                <a href="{{ route('shipping-costs.index') }}" class="text-gray-600 dark:text-gray-400 hover:underline">Cancel</a>
+                <a href="{{ route('shipping-costs.index') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 ml-2">Cancel</a>
             </div>
         </form>
     </div>

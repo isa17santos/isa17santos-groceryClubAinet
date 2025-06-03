@@ -19,25 +19,23 @@
     @endif
 
     <div class="overflow-x-auto shadow rounded-lg bg-white dark:bg-gray-800 p-6">
-        <form method="POST" action="{{ route('categories.store') }}" class="space-y-4">
+        <form method="POST" action="{{ route('categories.store') }}" enctype="multipart/form-data" class="space-y-4">
             @csrf
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
-                <input type="text" name="name" id="name" required
-                       class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white shadow-sm">
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" name="name" id="name" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
             <div>
-                <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image (file name)</label>
-                <input type="text" name="image" id="image"
-                       class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white shadow-sm">
+                <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
+                <input type="file" name="image" id="image" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 @error('image') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
-            <div class="pt-4 flex justify-between">
+            <div class="pt-4">
                 <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Create Category</button>
-                <a href="{{ route('categories.index') }}" class="text-gray-600 dark:text-gray-400 hover:underline">Cancel</a>
+                <a href="{{ route('categories.index') }}" class="bg-red-600 text-white px-4 py-2.5 rounded hover:bg-red-700 ml-2">Cancel</a>
             </div>
         </form>
     </div>

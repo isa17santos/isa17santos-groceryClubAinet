@@ -68,4 +68,15 @@ class Product extends Model
         return $this->belongsToMany(Order::class, 'items_orders')
             ->withPivot('quantity', 'unit_price', 'discount', 'subtotal');
     }
+
+    public function isLowStock(): bool
+    {
+        return $this->stock <= $this->stock_lower_limit;
+    }
+
+    public function isHighStock(): bool
+    {
+        return $this->stock >= $this->stock_upper_limit;
+    }
+
 }
