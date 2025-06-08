@@ -21,6 +21,6 @@ class SettingsController extends Controller
         $setting = Settings::first();
         $setting->update(['membership_fee' => $request->membership_fee]);
 
-        return redirect()->route('settings.edit')->with('success', 'Membership fee updated successfully.');
+        return redirect()->route('catalog')->with('success', 'Membership fee updated successfully.');
     }
 }

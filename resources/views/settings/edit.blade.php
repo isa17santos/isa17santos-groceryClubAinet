@@ -27,13 +27,13 @@
                 <label for="membership_fee" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Membership Fee (€)</label>
                 <input type="number" step="0.01" name="membership_fee" id="membership_fee"
                        value="{{ old('membership_fee', $setting->membership_fee) }}" required
-                       class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white shadow-sm">
+                       class="w-full min-w-0 rounded-md border-gray-300 shadow-sm focus:ring-lime-500 focus:border-lime-500 dark:bg-gray-700 dark:text-white">
                 @error('membership_fee') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
             <div class="pt-4 flex justify-between">
                 <button type="submit" class="bg-lime-600 text-white px-4 py-2 rounded hover:bg-lime-700">Save</button>
-                <a href="{{ url()->previous() }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Cancel</a>
+                <a href="{{ route('catalog') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Cancel</a>
             </div>
         </form>
     </div>

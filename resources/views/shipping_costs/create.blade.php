@@ -25,7 +25,7 @@
             @include('shipping_costs.partials.form')
 
             <div class="pt-4 flex justify-between">
-                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Save</button>
+                <button type="submit" class="bg-lime-600 text-white px-4 py-2 rounded-md hover:bg-lime-700 transition">Save</button>
                 <a href="{{ route('shipping-costs.index') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 ml-2">Cancel</a>
             </div>
         </form>
