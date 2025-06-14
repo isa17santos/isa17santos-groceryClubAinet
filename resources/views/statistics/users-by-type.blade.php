@@ -17,7 +17,7 @@
 
     <h1 class="text-4xl font-bold text-center text-yellow-700 dark:text-yellow-700 mb-10">Users by Type</h1>
 
-    <div class="bg-white shadow rounded-lg p-6">
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
         @php
             $labels = $usersByType->pluck('type');
             $totals = $usersByType->pluck('total');

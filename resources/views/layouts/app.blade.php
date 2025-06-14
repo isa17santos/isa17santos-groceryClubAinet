@@ -117,7 +117,12 @@
 
                 @if(in_array(Auth::user()->type, ['member', 'board']))
                     <a href="{{ route('card.show') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">💳 Card</a>
-                    <a href="{{ route('statistics.index') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📊 Estatísticas</a>
+                    <a href="{{ route('statistics.index') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📊 Statistics</a>
+                @endif
+
+                @if(in_array(Auth::user()->type, ['employee', 'board']))
+                    <a href="{{ route('order.pending') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📦 Pending Orders</a>
+                    <a href="{{ route('inventory.index') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">📋 Inventory</a>
                 @endif
 
                 <a href="{{ route('changePassword') }}" class="block px-8 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-green-700 dark:text-green-300">🔑 Change password</a>

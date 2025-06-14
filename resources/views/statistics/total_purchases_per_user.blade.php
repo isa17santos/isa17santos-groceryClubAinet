@@ -18,7 +18,7 @@
 
     <h1 class="text-4xl font-bold text-center text-yellow-700 dark:text-yellow-700 mb-10">Total Orders per User</h1>
 
-    <div class="bg-white shadow rounded-lg p-6">
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
         <table class="w-full text-left">
             <thead>
                 <tr class="text-lg font-semibold text-gray-700 dark:text-gray-300 border-b">

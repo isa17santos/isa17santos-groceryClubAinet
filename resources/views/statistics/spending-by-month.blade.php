@@ -20,7 +20,7 @@
         Spending by Month
     </h1>
 
-    <div class="bg-white shadow rounded-lg p-6">
+    <div class="overflow-x-auto shadow rounded-lg bg-white dark:bg-gray-800 p-6">
         <table class="w-full text-left">
             <thead>
                 <tr class="text-lg font-semibold text-gray-700 dark:text-gray-300 border-b">
