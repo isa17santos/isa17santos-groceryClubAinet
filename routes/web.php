@@ -25,7 +25,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingCostController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\StatisticsController;
 
 //rota catalog visualization
 Route::get('/', [CatalogController::class, 'index'])->name('catalog');
@@ -221,4 +221,50 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/inventory/supply-orders/{order}', [\App\Http\Controllers\SupplyOrderController::class, 'destroy'])->name('supply_orders.destroy');
 });
 
+//statistics
+Route::middleware(['auth'])->group(function () {
+    Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
+    
+    Route::get('/statistics/member-top-products', [StatisticsController::class, 'memberTopProducts'])->name('statistics.member-top-products');
 
+
+    //sales per month
+    Route::get('/statistics/sales', [StatisticsController::class, 'sales'])->name('statistics.sales');
+
+    Route::get('/statistics/orders-status/export', [StatisticsController::class, 'exportOrdersByStatus'])->name('statistics.export.orders-status');
+
+    Route::get('/statistics/products-and-categories/export', [StatisticsController::class, 'exportProductsAndCategories'])->name('statistics.export.products-and-categories');
+
+    Route::get('/statistics/sales/export', [StatisticsController::class, 'exportSales'])->name('statistics.export.sales');
+
+    Route::get('/statistics/member-orders/export', [StatisticsController::class, 'exportMemberOrdersCsv'])->name('statistics.member-orders.export');
+
+    Route::get('/statistics/total-purchases-per-user', [App\Http\Controllers\StatisticsController::class, 'totalPurchasesPerUser'])->name('statistics.total-purchases-per-user');
+
+
+});
+
+Route::get('/statistics/member-spending-by-month/export', [StatisticsController::class, 'exportMemberSpendingByMonth'])
+    ->name('statistics.member-spending-by-month.export');
+
+Route::get('/statistics/export/total-purchases-per-user', [StatisticsController::class, 'exportTotalPurchasesPerUser'])
+    ->name('statistics.export.total-purchases-per-user');
+
+Route::middleware(['auth', 'verified'])->prefix('statistics')->name('statistics.')->group(function () {
+    
+    // Estatísticas gerais (acessíveis por utilizadores autenticados)
+    Route::get('/', [StatisticsController::class, 'index'])->name('index');
+    Route::get('/orders-status', [StatisticsController::class, 'ordersByStatus'])->name('orders-status');
+    Route::get('/sales', [StatisticsController::class, 'salesByPeriod'])->name('sales');
+    Route::get('/users-by-type', [StatisticsController::class, 'usersByType'])->name('users-by-type');
+    Route::get('/products-and-categories', [StatisticsController::class, 'productsAndCategories'])->name('products-and-categories');
+    Route::get('/top-categories', [StatisticsController::class, 'topCategories'])->name('top-categories');
+    Route::get('/top-products', [StatisticsController::class, 'topProducts'])->name('top-products');
+
+    // Estatísticas específicas do membro autenticado
+    Route::get('/member/orders', [StatisticsController::class, 'memberOrders'])->name('member-orders');
+    Route::get('/member/spending/year', [StatisticsController::class, 'memberSpendingByYear'])->name('member-spending-year');
+    Route::get('/member/spending/month', [StatisticsController::class, 'memberSpendingByMonth'])->name('member-spending-month');
+
+   
+});
